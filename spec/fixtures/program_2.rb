@@ -16,6 +16,10 @@ class Customer
     fake_neighborhood_api_call(city: self.city, state: self.state, postal_code: self.postal_code)
   end
 
+  def something_else
+    fake_neighborhood_api_call(city: self.city, state: self.state)
+  end
+
   def fake_neighborhood_api_call(args={})
     "Probably River North"
   end

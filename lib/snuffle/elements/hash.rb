@@ -7,10 +7,17 @@ module Snuffle
       attr_accessor :node
 
       def self.materialize(nodes=[])
-        node.each.map{|hash_node| new(hash_node) }
+        nodes.each.map{|hash_node| new(hash_node) }.select{|h| h.pairs.present?}
       end
 
-      def initialize
+      def self.overlapping(hashes=[])
+        {
+          keys:   Snuffle::Histogram.from(hashes.map(&:keys)).select{|k,v| v > 1},
+          values: Snuffle::Histogram.from(hashes.map(&:values)).select{|k,v| v > 1}
+        }
+      end
+
+      def initialize(node)
         self.node = node
       end
 
@@ -19,11 +26,11 @@ module Snuffle
       end
 
       def keys
-        node.children.map{ |child| child.first.name }
+        node.children.map{ |child| child.children.first.name }
       end
 
       def values
-        node.children.map{ |child| child.last.name }
+        node.children.map{ |child| child.children.last.name }
       end
 
     end

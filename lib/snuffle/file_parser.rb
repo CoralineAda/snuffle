@@ -1,4 +1,4 @@
-require 'parser'
+require 'parser/current'
 
 module Snuffle
   class FileParser
@@ -10,7 +10,7 @@ module Snuffle
     end
 
     def ast
-      @ast ||= ::Parser::CurrentRuby.parse(self.content)
+      @ast ||= Parser::CurrentRuby.parse(self.content)
     end
 
     def nodes
