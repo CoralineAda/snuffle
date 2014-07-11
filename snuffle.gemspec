@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Snuffle::VERSION
   spec.authors       = ["Coraline Ada Ehmke", "Kerri Miller"]
   spec.email         = ["coraline@idolhands.com"]
-  spec.summary       = %q{Snuffle detects latent objects in your Ruby code.}
-  spec.description   = %q{Snuffle detects latent objects in your Ruby code.}
+  spec.summary       = %q{Snuffle detects data clumps in your Ruby code.}
+  spec.description   = %q{Snuffle detects data clumbs and other hints of extractable objects in your Ruby code.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "parser"
   spec.add_dependency "thor"
-  spec.add_dependency "ephemeral"
+  spec.add_dependency "ephemeral", "~> 2.3.2"
   spec.add_dependency "poro_plus"
 
   spec.add_development_dependency "bundler", "~> 1.6"

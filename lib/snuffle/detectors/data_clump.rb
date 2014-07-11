@@ -1,5 +1,4 @@
 require 'parser/current'
-require 'rubytree'
 require 'pry'
 
 module Snuffle
@@ -12,30 +11,40 @@ module Snuffle
         self.content = content || File.read("./spec/fixtures/program_1.rb")
       end
 
-      def parsed_content
-        @parsed_content ||= Parser::CurrentRuby.parse(self.content)
+      def ast
+        @ast ||= Parser::CurrentRuby.parse(self.content)
       end
 
-      # def build_tree
-      #   tree = Tree::TreeNode.new("ROOT", "Root Content")
-      #   extract_nodes(parsed_content).each do |pair|
-      #     tree << Tree::TreeNode.new(pair)
-      #   end
-      #   tree
-      # end
+      def nodes
+        @nodes ||= extract_nodes_from(ast)
+      end
 
-      def extract_nodes(node, nodes=[])
-        if node.respond_to?(:type)
-          nodes << node.type
+      def extract_nodes_from(ast_node, nodes=Ephemeral::Collection.new("Node"), parent_id=:root)
+        if ast_node.respond_to?(:type)
+          extracted_node = Node.new(
+            type: ast_node.type,
+            parent_id: parent_id,
+            name: name_from(ast_node)
+          )
+        else
+#          extracted_node = Node.nil
+           extracted_node = Node.new(
+            type: :nil,
+            parent_id: parent_id,
+            name: name_from(ast_node)
+          )
         end
-        if node.respond_to?(:children)
-          nodes << node.children.map{|child| extract_nodes(child, nodes)}.flatten
-        end
+        nodes << extracted_node
+        ast_node.children.each{|child| extract_nodes_from(child, nodes, extracted_node.id)} if ast_node.respond_to?(:children)
         nodes
       end
 
-      def hashes
-        extract_nodes(parsed_content).select{|node| node.respond_to?(:type) && node.type == :hash}
+      def name_from(node)
+        return "unknown" if node.nil?
+        return node unless node.respond_to?(:children)
+        return node.children.last unless node.respond_to?(:loc) && node.loc.respond_to?(:name)
+        name = node.loc.name
+        self.content[name.begin_pos, name.end_pos - 1]
       end
 
     end

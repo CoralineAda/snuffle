@@ -10,11 +10,11 @@ class Song
   end
 
   def can_be_playlisted?
-    options[:available_to_playlist]
+    metadata[:playlist]
   end
 
   def can_be_downloaded?
-    options.fetch[:downloadable]
+    metadata[:download]
   end
 
   def drm_enabled?
@@ -23,8 +23,8 @@ class Song
 
   def metadata
     {
-      :playlist => can_be_playlisted?,
-      :download => can_be_downloaded
+      :playlist => options[:available_to_playlist],
+      :download => options[:downloadable]
     }
   end
 
