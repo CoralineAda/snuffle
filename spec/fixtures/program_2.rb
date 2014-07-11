@@ -28,6 +28,14 @@ class Customer
     [112.32, 124.11]
   end
 
+  def business_card_api_call
+    {name: customer_name, business: company_name}
+  end
+
+  def letterhead_api_call
+    {name: customer_name, business: company_name}
+  end
+
   def address
     string = ""
     string << self.customer_name

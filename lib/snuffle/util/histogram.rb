@@ -3,7 +3,7 @@ module Snuffle
 
     class Histogram
 
-      def self.histogram(arrays)
+      def self.from(arrays)
         arrays.flatten.inject({}) { |h, value| h[value] ||= 0; h[value] += 1; h}
       end
 

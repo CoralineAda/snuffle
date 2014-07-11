@@ -10,13 +10,6 @@ module Snuffle
         nodes.each.map{|hash_node| new(hash_node) }.select{|h| h.pairs.present?}
       end
 
-      def self.overlapping(hashes=[])
-        {
-          keys:   Snuffle::Histogram.from(hashes.map(&:keys)).select{|k,v| v > 1},
-          values: Snuffle::Histogram.from(hashes.map(&:values)).select{|k,v| v > 1}
-        }
-      end
-
       def initialize(node)
         self.node = node
       end
