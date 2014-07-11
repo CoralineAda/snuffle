@@ -1,6 +1,7 @@
+require 'parser'
 
 module Snuffle
-  class Parser
+  class FileParser
 
     attr_accessor :content
 

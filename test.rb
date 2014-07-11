@@ -10,5 +10,5 @@ def file
 end
 
 def d
-  @d ||= Snuffle::Parser.new(file)
+  @d ||= Snuffle::FileParser.new(file)
 end
