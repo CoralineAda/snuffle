@@ -27,11 +27,11 @@ module Snuffle
       end
 
       def key_matrix
-        keys.map(&:hash)
+        keys.sort.map(&:hash)
       end
 
       def value_matrix
-        values.map(&:hash)
+        values.sort.map(&:hash)
       end
 
       def inspect
