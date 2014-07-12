@@ -22,15 +22,11 @@ module Snuffle
       def clusters
         cohorts = []
         hashes.each do |outer_hash|
-          cohorts << {
-            hash: outer_hash,
-            neighbors: (hashes - [outer_hash]).map do |inner_hash|
-              {
-                hash: inner_hash,
-                distance: distance(outer_hash.value_matrix, inner_hash.value_matrix)
-              }
-            end
-          }
+          cohort = Cohort.new(element: outer_hash)
+          (hashes - [outer_hash]).each do |inner_hash|
+            cohort.neighbors << [inner_hash, distance(outer_hash.value_matrix, inner_hash.value_matrix)]
+          end
+          cohorts << cohort
         end
         cohorts
       end
