@@ -34,8 +34,12 @@ module Snuffle
         values.sort.map(&:hash)
       end
 
+      def sorted_pairs
+        keys.sort.inject({}) { |h, k| h[k] = pairs[k]; h}
+      end
+
       def inspect
-        pairs
+        sorted_pairs
       end
 
     end

@@ -11,7 +11,7 @@ module Snuffle
       end
 
       def cohorts
-        clusters.select{|c| c.has_near_neighbors?}.map(&:values).uniq
+        clusters.select{|c| c.has_near_neighbors?}.uniq(&:values)
       end
 
       private

@@ -3,8 +3,9 @@ require 'pry'
 
 describe Snuffle::Detectors::DataClump do
 
-  let(:code) { File.read("spec/fixtures/program_2.rb") }
-  let(:detector) { Snuffle::Detectors::DataClump.new(code) }
+  let(:file) { File.read("spec/fixtures/program_2.rb") }
+  let(:parser) { Snuffle::FileParser.new(file) }
+  let(:detector) { Snuffle::Detectors::DataClump.new(parser.hashes) }
 
   describe "weighting" do
 
@@ -13,7 +14,13 @@ describe Snuffle::Detectors::DataClump do
      context "a hash cohort" do
 
       it "is detected" do
-        expect(detector.hash_cohorts).to eq([:city, :state, :postal_code])
+        expect(detector.cohorts.map(&:values)).to eq(
+          [
+            [:city, :postal_code, :state],
+            [:city, :state],
+            [:company_name, :customer_name]
+          ]
+        )
       end
 
       it "is assigned a weight of X"
