@@ -55,5 +55,3 @@ class Customer
   end
 
 end
-
-# d.nodes.where(type: :sym).select{|n| n.grandparent.type == :hash}
