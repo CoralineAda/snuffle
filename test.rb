@@ -18,5 +18,5 @@ def hashes
 end
 
 def clump
-  @clump ||= Snuffle::Detectors::HashClump.new(hashes)
+  @clump ||= Snuffle::Detectors::DataClump.new(hashes)
 end
