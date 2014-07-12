@@ -1,52 +1,40 @@
-require 'parser/current'
-require 'pry'
-
 module Snuffle
+
   module Detectors
+
     class DataClump
 
-      attr_accessor :content
+      attr_accessor :elements
 
-      def initialize(content=nil)
-        self.content = content || File.read("./spec/fixtures/program_1.rb")
+      def initialize(elements=[])
+        self.elements = elements
       end
 
-      def ast
-        @ast ||= Parser::CurrentRuby.parse(self.content)
+      def cohorts
+        clusters.select{|c| c.has_near_neighbors?}.map(&:values).uniq
       end
 
-      def nodes
-        @nodes ||= extract_nodes_from(ast)
-      end
+      private
 
-      def extract_nodes_from(ast_node, nodes=Ephemeral::Collection.new("Node"), parent_id=:root)
-        if ast_node.respond_to?(:type)
-          extracted_node = Node.new(
-            type: ast_node.type,
-            parent_id: parent_id,
-            name: name_from(ast_node)
-          )
-        else
-#          extracted_node = Node.nil
-           extracted_node = Node.new(
-            type: :nil,
-            parent_id: parent_id,
-            name: name_from(ast_node)
-          )
+      def clusters
+        cohorts = []
+        elements.each do |outer_element|
+          cohort = Cohort.new(element: outer_element)
+          cohort.neighbors = (elements - [outer_element]).map do |inner_element|
+             cohort.neighbor.new(inner_element, distance(outer_element.value_matrix, inner_element.value_matrix))
+          end
+          cohorts << cohort
         end
-        nodes << extracted_node
-        ast_node.children.each{|child| extract_nodes_from(child, nodes, extracted_node.id)} if ast_node.respond_to?(:children)
-        nodes
+        cohorts
       end
 
-      def name_from(node)
-        return "unknown" if node.nil?
-        return node unless node.respond_to?(:children)
-        return node.children.last unless node.respond_to?(:loc) && node.loc.respond_to?(:name)
-        name = node.loc.name
-        self.content[name.begin_pos, name.end_pos - 1]
+      def distance(primary_matrix, token_matrix)
+        sum = primary_matrix.inject([]){ |a,k| a << (primary_matrix & token_matrix).count ** 2; a}.reduce(:+)
+        1.0 / (1 + Math.sqrt(sum)).to_f
       end
 
     end
+
   end
+
 end

@@ -8,7 +8,7 @@ require "snuffle/node"
 require "snuffle/file_parser"
 require "snuffle/elements/hash"
 require "snuffle/util/histogram"
-require "snuffle/detectors/hash_clump"
+require "snuffle/detectors/data_clump"
 
 module Snuffle
 end
