@@ -9,6 +9,14 @@ def file
   File.open("spec/fixtures/program_2.rb", "r").read
 end
 
-def d
-  @d ||= Snuffle::FileParser.new(file)
+def file_parser
+  @file_parser ||= Snuffle::FileParser.new(file)
+end
+
+def hashes
+  file_parser.hashes
+end
+
+def clump
+  @clump ||= Snuffle::Detectors::HashClump.new(hashes)
 end

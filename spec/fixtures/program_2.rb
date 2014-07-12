@@ -13,11 +13,19 @@ class Customer
   end
 
   def neighborhood
-    fake_neighborhood_api_call(city: self.city, state: self.state, postal_code: self.postal_code)
+    fake_neighborhood_api_call(state: self.state, city: self.city, postal_code: self.postal_code)
   end
 
   def something_else
     fake_neighborhood_api_call(city: self.city, state: self.state)
+  end
+
+  def and_something_else_again
+    fake_neighborhood_api_call(city: self.city)
+  end
+
+  def and_something_else_again_and_again
+    fake_neighborhood_api_call(state: self.state)
   end
 
   def fake_neighborhood_api_call(args={})

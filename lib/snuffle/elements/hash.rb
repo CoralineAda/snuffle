@@ -26,6 +26,18 @@ module Snuffle
         node.children.map{ |child| child.children.last.name }
       end
 
+      def key_matrix
+        keys.map(&:hash)
+      end
+
+      def value_matrix
+        values.map(&:hash)
+      end
+
+      def inspect
+        pairs
+      end
+
     end
 
   end
