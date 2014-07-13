@@ -60,30 +60,35 @@ module Snuffle
     end
 
     def extract_nodes_from(ast_node, nodes=Ephemeral::Collection.new("Snuffle::Node"), parent_id=:root)
-      if ast_node.respond_to?(:type)
-        extracted_node = Snuffle::Node.new(
-          type: ast_node.type,
-          parent_id: parent_id,
-          name: name_from(ast_node)
-        )
-      else
-         extracted_node = Snuffle::Node.new(
-          type: :nil,
-          parent_id: parent_id,
-          name: name_from(ast_node)
-        )
+      if name = name_from(ast_node)
+        if ast_node.respond_to?(:type)
+          extracted_node = Snuffle::Node.new(
+            type: ast_node.type,
+            parent_id: parent_id,
+            name: name_from(ast_node)
+          )
+        else
+          extracted_node = Snuffle::Node.new(
+            type: :nil,
+            parent_id: parent_id,
+            name: name
+          )
+        end
+        nodes << extracted_node
+        ast_node.children.each{|child| extract_nodes_from(child, nodes, extracted_node.id)} if ast_node.respond_to?(:children)
       end
-      nodes << extracted_node
-      ast_node.children.each{|child| extract_nodes_from(child, nodes, extracted_node.id)} if ast_node.respond_to?(:children)
       nodes
     end
 
     def name_from(node)
-      return "unknown" if node.nil?
+      return if node.nil?
       return node unless node.respond_to?(:children)
-      return node.children.last unless node.respond_to?(:loc) && node.loc.respond_to?(:name)
-      name = node.loc.name
-      source[name.begin_pos, name.end_pos - 1]
+      if node.respond_to?(:loc) && node.loc.respond_to?(:name)
+        name = node.loc.name
+        return source[name.begin_pos, name.end_pos - 1]
+      else
+        return name_from(node.children.last)
+      end
     end
 
   end

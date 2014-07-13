@@ -7,7 +7,7 @@ module Snuffle
       attr_accessor :node
 
       def self.materialize(nodes=[])
-        nodes.each.map{|string_node| new(string_node) }#.select{|h| h.pairs.present?}
+        nodes.each.map{|string_node| new(string_node) }
       end
 
       def initialize(node)
