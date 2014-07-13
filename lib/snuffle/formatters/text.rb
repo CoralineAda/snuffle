@@ -1,28 +1,30 @@
 require 'text-table'
 
-module Formatters
+module Snuffle
+  module Formatters
 
-  class Text
+    class Text
 
-    include Formatters::Base
+      include Formatters::Base
 
-    def header
-      columns.map(&:titleize)
-    end
-
-    def export
-      table = ::Text::Table.new
-      table.head = header
-      table.rows = rows
-      table.to_s
-    end
-
-    def rows
-      file.object_candidates.map do |candidate|
-        [file.class_name, "##{candidate.join(", #")}"]
+      def header
+        columns.map(&:titleize)
       end
+
+      def export
+        table = ::Text::Table.new
+        table.head = header
+        table.rows = rows
+        table.to_s
+      end
+
+      def rows
+        summary.object_candidates.map do |candidate|
+          [summary.path_to_file, summary.class_name, "##{candidate.join(", #")}"]
+        end
+      end
+
     end
 
   end
-
 end

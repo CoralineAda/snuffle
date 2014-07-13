@@ -4,83 +4,71 @@
     %title
       Fukuzatsu
     %link{href: "http://cdn.datatables.net/1.10.0/css/jquery.dataTables.css", rel: "stylesheet"}
-    %script{language: "javascript", src: "http://code.jquery.com/jquery-1.11.0.min.js", type: "text/javascript"}
-    %script{language: "javascript", src: "http://code.jquery.com/jquery-migrate-1.2.1.min.js", type: "text/javascript"}
-    %script{language: "javascript", src: "http://cdn.datatables.net/1.10.0/js/jquery.dataTables.js", type: "text/javascript"}
 
     %style{media: "screen", type: "text/css"}
-      body { background: #593232; color: #fff; font-family: arial, sans-serif; padding: 2em; }
-      table { box-shadow: 0 5px 0 rgba(0,0,0,.8); background: #444; border-spacing: 0; border: 5px solid #000; border-radius: 25px; border-collapse: collapse; min-width: 50%; }
-      th.sorting_asc, th.sorting_desc { text-transform: uppercase !important; font-size: .8em !important; background-image: none !important; background: rgba(64, 41, 41, .5) !important;}
-      th.sorting { background-position: left !important; border-right: 1px solid #222; text-transform: uppercase !important; font-size: .8em !important}
-      tr.header th:first-child { border-radius: 6px 0 0 0; }
-      tr.header th:last-child { border-radius: 0 6px 0 0; }
-      tr.header th:only-child { border-radius: 6px 6px 0 0; }
+      body { background: #49525a; color: #fff; font-family: arial, sans-serif; padding: 2em; }
+      table { width: 100%; box-shadow: 0 5px 0 rgba(0,0,0,.8); border-spacing: 0; border: 5px solid #000; border-radius: 5px; border-collapse: collapse; min-width: 50%; }
+      tr.header th:first-child { border-radius: 5px 0 0 0; }
+      tr.header th:last-child { border-radius: 0 5px 0 0; }
+      tr.header th:only-child { border-radius: 5px 5px 0 0; }
       tr.header { background-color: #222; }
       tr.even { background: rgba(128, 128, 128, 0.5) !important;}
       tr.odd { background: rgba(128, 128, 128, 0.25) !important}
       tr.even:hover, tr.odd:hover { background: rgba(128, 128, 128, 0.75) !important;}
+      tr.faint td { opacity: 0.5; font-style: italic; }
       th { background: #000; text-align: left; padding: .5em; }
       td { text-align: left; padding: .5em; padding-left: 1.25em !important;}
       td.center { text-align: center; }
-      td.sorting_1 { background: none !important; padding-left: 1.25em !important; }
       tfoot { background: #000; border-top: 10px solid #000; font-family: courier; margin-top: 4em; font-size: .75em;  }
-      a:link, a:visited { color: #aaa }
+      a:link, a:visited { color: #fff }
       div.file_meta { float: left; height: 3em; width: 30%; }
       h1 { color:#fff; font-size: 1.25em; margin-top: .25em; }
       h2 { color:#fff; font-size: .75em; margin-top: -1em; }
       h3 { color:#fff; font-size: 1em; float: right; margin-top: 1em; }
-      td.sorting_1 { background: none !important; padding-left: 1.25em !important; }
-      div.dataTables_filter { margin-bottom: 2em !important; }
-      div.dataTables_filter label { color: #fff; }
-      div.dataTables_paginate { display: none !important; }
-      div.dataTables_info { display: none !important; }
 
   %body
     %table{class: "output-table"}
       %thead
         %tr.header
-          %th{colspan: 4}
+          %th{colspan: 3}
             .file_meta
               %h1
-                Project Overview
+                Snuffle Analysis
         %tr
           %th
             File
           %th
-            Module/Class Name
+            Host Module/Class
           %th
-            Complexity
-          %th
-            Details
+            Object Candidates
       %tbody
-        - file_summary.each do |summary|
-          %tr
+        - summaries.each_with_index do |summary, i|
+          %tr{class: "#{i % 2 == 1 ? 'odd' : 'even'} #{summary.object_candidates.count == 0 ? 'faint' : ''}"}
             %td
-              %a{href: "#{summary[:path_to_file]}.htm"}
-                = summary[:path_to_file]
-            %td
-              - if summary[:class_name].size > 25
-                = "..."
-                = summary[:class_name][-24..-1]
+              - if summary.object_candidates.count == 0
+                = summary.path_to_file
               - else
-                = summary[:class_name]
+                %a{href: "#{summary.path_to_file}.htm"}
+                  = summary.path_to_file
             %td
-              = summary[:complexity]
+              - if summary.class_name.size > 30
+                = "..."
+                = summary.class_name[-29..-1]
+              - else
+                = summary.class_name
             %td
-              %a{href: "#{summary[:path_to_file]}.htm"}
-                View Details
+              = summary.object_candidates.count
       %tfoot
         %tr
-          %td.center{colspan: 4}
+          %td.center{colspan: 3}
             %em
               Analyzed on
               = date
               at
               = time
               by
-              %a{href: "https://gitlab.com/coraline/fukuzatsu", target: "_new"}
-                Fukuzatsu
+              %a{href: "https://gitlab.com/coraline/snuffle", target: "_new"}
+                Snuffle
     :javascript
       $(document).ready(function(){
         $('.output-table').dataTable({

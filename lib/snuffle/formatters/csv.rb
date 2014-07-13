@@ -1,26 +1,28 @@
-module Formatters
+module Snuffle
+  module Formatters
 
-  class Csv
+    class Csv
 
-    include Formatters::Base
+      include Formatters::Base
 
-    def header
-      columns.join(',')
-    end
+      def header
+        columns.join(',')
+      end
 
-    def rows
-      file.object_candidates.map do |candidate|
-        "#{file.class_name},##{candidate.join(" #")}"
-      end.join("\r\n")
-    end
+      def rows
+        summary.object_candidates.map do |candidate|
+          [summary.path_to_file, summary.class_name, "##{candidate.join(" #")}"].join(',')
+        end
+      end
 
-    def footer
-    end
+      def footer
+      end
 
-    def file_extension
-      ".csv"
+      def file_extension
+        ".csv"
+      end
+
     end
 
   end
-
 end

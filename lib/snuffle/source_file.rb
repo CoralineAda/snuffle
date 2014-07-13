@@ -21,10 +21,12 @@ module Snuffle
     end
 
     def summary
-      {
-        file: self.path_to_file,
+      Summary.new(
+        source_file: self,
+        class_name: class_name,
+        path_to_file: self.path_to_file,
         object_candidates: object_candidates
-      }
+      )
     end
 
     def class_name
@@ -56,15 +58,15 @@ module Snuffle
       @ast ||= Parser::CurrentRuby.parse(source)
     end
 
-    def extract_nodes_from(ast_node, nodes=Ephemeral::Collection.new("Node"), parent_id=:root)
+    def extract_nodes_from(ast_node, nodes=Ephemeral::Collection.new("Snuffle::Node"), parent_id=:root)
       if ast_node.respond_to?(:type)
-        extracted_node = Node.new(
+        extracted_node = Snuffle::Node.new(
           type: ast_node.type,
           parent_id: parent_id,
           name: name_from(ast_node)
         )
       else
-         extracted_node = Node.new(
+         extracted_node = Snuffle::Node.new(
           type: :nil,
           parent_id: parent_id,
           name: name_from(ast_node)

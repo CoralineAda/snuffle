@@ -18,7 +18,7 @@ module Snuffle
     end
 
     def values
-      self.element.values.sort
+      self.element.values.map(&:to_s).sort
     end
 
     def neighbor
