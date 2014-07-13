@@ -52,8 +52,6 @@ module Snuffle
 
     def parse(path_to_file, options={})
       file = ParsedFile.new(path_to_file: path_to_file)
-      parser = formatter.new(file)
-      parser.export
       self.summaries ||= []
       self.summaries << file.summary.merge(results_file: parser.path_to_results)
       last_file = file

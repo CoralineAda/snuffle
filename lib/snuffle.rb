@@ -1,11 +1,14 @@
 require 'securerandom'
 require 'ephemeral'
 require 'poro_plus'
+require 'fileutils'
+require 'haml'
 
 require "snuffle/version"
 require "snuffle/analysis"
 require "snuffle/cohort"
 require "snuffle/cohort_detector"
+require "snuffle/cli"
 require "snuffle/node"
 require "snuffle/source_file"
 require "snuffle/source_parser"

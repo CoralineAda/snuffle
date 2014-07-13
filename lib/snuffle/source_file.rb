@@ -16,11 +16,22 @@ module Snuffle
       @nodes ||= extract_nodes_from(ast)
     end
 
-    def cohorts
-      CohortDetector.new(self.nodes).cohorts
+    def object_candidates
+      cohorts.map(&:values)
+    end
+
+    def summary
+      {
+        file: self.path_to_file,
+        object_candidates: object_candidates
+      }
     end
 
     private
+
+    def cohorts
+      CohortDetector.new(self.nodes).cohorts
+    end
 
     def ast
       @ast ||= Parser::CurrentRuby.parse(source)
