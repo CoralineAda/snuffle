@@ -4,6 +4,10 @@ module Snuffle
 
     attr_accessor :nodes
 
+    def initialize(input_nodes)
+      self.nodes = input_nodes
+    end
+
     def cohorts
       clusters.select{|cluster| cluster.has_near_neighbors?}.uniq(&:values)
     end
@@ -24,7 +28,7 @@ module Snuffle
              distance(outer_element.value_matrix, inner_element.value_matrix)
             )
         end
-        clusters << cohort
+        clusters << cohort if cohort.values.count > 1
       end
       clusters
     end

@@ -1,20 +1,26 @@
+require "parser/current"
+
 module Snuffle
 
   class SourceFile
 
     include PoroPlus
 
-    attr_accessor :path_to_file, :filename, :source
+    attr_accessor :path_to_file, :source
 
     def source
-      @source ||= File.read(self.path_to_file, "r")
+      @source ||= File.read(self.path_to_file)
     end
 
     def nodes
       @nodes ||= extract_nodes_from(ast)
     end
 
-   private
+    def cohorts
+      CohortDetector.new(self.nodes).cohorts
+    end
+
+    private
 
     def ast
       @ast ||= Parser::CurrentRuby.parse(source)

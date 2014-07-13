@@ -1,24 +1,22 @@
-require 'parser/current'
-
 module Snuffle
   class SourceParser
 
     attr_accessor :source_files, :reports
 
-    def initialize(source_files=[])
-      @source_files = [source_files].flatten
+    def initialize(files=[])
+      @source_files = [files].flatten.map{ |file| Snuffle::SourceFile.new(path_to_file: file) }
     end
 
     def cohorts_from(source_file)
-      CohortDetector.new(nodes: source_file.nodes).cohorts
+      CohortDetector.new(source_file.nodes).cohorts
     end
 
-    def reports
+    def report
       @reports ||= source_files.map do |source_file|
-        Analysis.new(
-          source_file: source_file,
-          cohorts:     cohorts_from(source_file)
-        )
+        {
+          source_file: source_file.path_to_file,
+          object_candidates: cohorts_from(source_file).map(&:values)
+        }
       end
     end
 

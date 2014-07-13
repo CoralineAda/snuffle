@@ -1,7 +1,3 @@
-# d.nodes.where(type: :sym).select{|n| n.grandparent.type == :hash}.group_by{|n| n.grandparent.id}.values.map{|set| set.map(&:name)}
-
-
-
 class Node
 
   include Ephemeral::Base
@@ -26,21 +22,25 @@ class Node
     @id ||= SecureRandom.uuid
   end
 
+  def name
+    @name.size > 20 ? "#{@name[0..20]}..." : @name
+  end
+
   def parent
     Node.where(id: self.parent_id).first
   end
 
-  def descendents(nodes=[])
-    nodes << self.children.map{|desc| descendents(desc, nodes)}
-    nodes.flatten
-  end
-
-  def siblings
-    Node.where(parent_id: self.parent_id)
-  end
-
   def children
     Node.where(parent_id: self.id)
+  end
+
+  def inspect
+    {
+      id: self.id,
+      type: self.type,
+      parent_id: self.parent_id,
+      child_ids: self.child_ids
+    }.to_s
   end
 
 end
