@@ -44,6 +44,10 @@ class Customer
     {name: customer_name, business: company_name}
   end
 
+  def letterhead
+    "#{customer_name}\r#{company_name}"
+  end
+
   def address
     string = ""
     string << self.customer_name

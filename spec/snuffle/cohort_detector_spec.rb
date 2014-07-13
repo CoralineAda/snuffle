@@ -1,11 +1,11 @@
 require 'spec_helper'
 require 'pry'
 
-describe Snuffle::Detectors::DataClump do
+describe Snuffle::CohortDetector do
 
   let(:file) { File.read("spec/fixtures/program_2.rb") }
   let(:parser) { Snuffle::FileParser.new(file) }
-  let(:detector) { Snuffle::Detectors::DataClump.new(parser.hashes) }
+  let(:detector) { Snuffle::CohortDetector.new(parser.hashes) }
 
   describe "weighting" do
 

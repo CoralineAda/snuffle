@@ -49,7 +49,7 @@ module Snuffle
     end
 
     def strings
-      Element::Hash.materialize(nodes.where(type: :string).to_a)
+      Element::String.materialize(nodes.where(type: :dstr).to_a)
     end
 
   end
