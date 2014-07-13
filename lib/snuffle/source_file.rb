@@ -1,20 +1,23 @@
-require 'parser/current'
-
 module Snuffle
-  class FileParser
 
-    attr_accessor :content
+  class SourceFile
 
-    def initialize(content=nil)
-      self.content = content || File.read("./spec/fixtures/program_1.rb")
-    end
+    include PoroPlus
 
-    def ast
-      @ast ||= Parser::CurrentRuby.parse(self.content)
+    attr_accessor :path_to_file, :filename, :source
+
+    def source
+      @source ||= File.read(self.path_to_file, "r")
     end
 
     def nodes
       @nodes ||= extract_nodes_from(ast)
+    end
+
+   private
+
+    def ast
+      @ast ||= Parser::CurrentRuby.parse(source)
     end
 
     def extract_nodes_from(ast_node, nodes=Ephemeral::Collection.new("Node"), parent_id=:root)
@@ -41,16 +44,9 @@ module Snuffle
       return node unless node.respond_to?(:children)
       return node.children.last unless node.respond_to?(:loc) && node.loc.respond_to?(:name)
       name = node.loc.name
-      self.content[name.begin_pos, name.end_pos - 1]
-    end
-
-    def hashes
-      Element::Hash.materialize(nodes.where(type: :hash).to_a)
-    end
-
-    def strings
-      Element::String.materialize(nodes.where(type: :dstr).to_a)
+      source[name.begin_pos, name.end_pos - 1]
     end
 
   end
+
 end
