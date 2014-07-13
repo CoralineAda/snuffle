@@ -9,8 +9,8 @@ module Formatters
     end
 
     def rows
-      file.object_candidates.map do |method|
-        "#{file.path_to_file},#{method.prefix}#{method.name},#{method.complexity}"
+      file.object_candidates.map do |candidate|
+        "#{file.class_name},##{candidate.join(" #")}"
       end.join("\r\n")
     end
 

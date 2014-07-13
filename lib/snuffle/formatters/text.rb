@@ -7,7 +7,7 @@ module Formatters
     include Formatters::Base
 
     def header
-      ["Class", "Object Candidates"]
+      columns.map(&:titleize)
     end
 
     def export
@@ -19,11 +19,8 @@ module Formatters
 
     def rows
       file.object_candidates.map do |candidate|
-        [file.class_name, candidate.join(", ")]
+        [file.class_name, "##{candidate.join(", #")}"]
       end
-    end
-
-    def footer
     end
 
   end

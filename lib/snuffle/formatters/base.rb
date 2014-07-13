@@ -15,7 +15,7 @@ module Formatters
     end
 
     def columns
-      ["file", "object candidates"]
+      ["originating class", "candidate object attributes"]
     end
 
     def root_path
@@ -23,9 +23,8 @@ module Formatters
     end
 
     def output_path
-      output_path = "#{root_path}/#{self.file.path_to_file.split('/')[0..-2].join("/")}"
-      FileUtils.mkpath(output_path)
-      output_path
+      FileUtils.mkpath(root_path)
+      root_path
     end
 
     def path_to_results
@@ -33,7 +32,8 @@ module Formatters
     end
 
     def filename
-      self.file.path_to_file.split('/')[-1] + file_extension
+      base = self.file.class_name.downcase.gsub(/[^a-zA-Z0-9]/, '_')
+      base + file_extension
     end
 
     def file_extension
@@ -41,14 +41,10 @@ module Formatters
     end
 
     def export
-      begin
-        outfile = File.open("#{path_to_results}", 'w')
-        outfile.write(content)
-      rescue Exception => e
-        puts "Unable to write output: #{e} #{e.backtrace}"
-      ensure
-        outfile && outfile.close
-      end
+      outfile = File.open("#{path_to_results}", 'w')
+      outfile.write(content)
+      outfile.close
+      path_to_results
     end
 
   end

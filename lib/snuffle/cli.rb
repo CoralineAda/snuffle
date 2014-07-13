@@ -12,8 +12,10 @@ module Snuffle
     method_option :format, :type => :string, :default => 'text', :aliases => "-f"
 
     def check(path="./")
-      file_list(path).each{ |path_to_file| report(path_to_file) }
-      handle_index(summaries)
+      summaries = file_list(path).map do |path_to_file|
+        Snuffle::SourceFile.new(path_to_file: path_to_file).summary
+      end
+      summaries.each{|summary| report(summary)}
     end
 
     default_task :check
@@ -30,40 +32,32 @@ module Snuffle
       end
     end
 
-    def formatter
-      case options['format']
-      when 'html'
-        ::Formatters::Html
-      when 'csv'
-        ::Formatters::Csv
-      else
-        ::Formatters::Text
-      end
+    def report
+      text_report
+      cvs_report
+      html_report
     end
 
-    def handle_index(file_summary)
+    def cvs_report(summary)
+      return unless options['format'] == 'csv'
+      results_files << ::Formatters::Csv.new(summary).export
+    end
+
+    def html_report(file_summary)
       return unless options['format'] == 'html'
       index = ::Formatters::HtmlIndex.new(file_summary)
       self.last_file = "#{index.output_path}/#{index.filename}"
       index.export
     end
 
-    def report(path_to_file)
+    def text_report
+      return unless options['format'] == 'text'
       file = SourceFile.new(path_to_file: path_to_file)
-      parser = formatter.new(file)
-      self.summaries ||= []
-      self.summaries << file.summary.merge(results_file: parser.path_to_results)
-      last_file = file
-      if options['format'] == "text"
-        puts parser.export
-      else
-        puts "results written to:"
-        puts last_file.present? && "#{last_file}" || results_files.join("\r\n")
-      end
+      puts ::Formatters::Text.new(file).export
     end
 
     def results_files
-      summaries.map{|s| s[:results_file]}
+      @results_files ||= []
     end
 
   end
