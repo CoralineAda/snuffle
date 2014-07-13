@@ -22,8 +22,9 @@
 
     %ul
       - summary.object_candidates.each do |candidate|
-        %li
-          = "#" + candidate.join(" #")
+        - if candidate.length > 0
+          %li
+            = candidate.map{|c| "##{c}" }.join(", ")
 
     = source_lines
 

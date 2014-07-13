@@ -24,9 +24,9 @@ module Snuffle
       @id ||= SecureRandom.uuid
     end
 
-    # def name
-    #   @name.size > 20 ? "#{@name[0..20]}..." : @name
-    # end
+    def name
+      @name.to_s.gsub(/[^a-zA-Z0-9\_]/,'')
+    end
 
     def parent
       Snuffle::Node.where(id: self.parent_id).first
