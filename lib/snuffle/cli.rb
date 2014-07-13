@@ -54,6 +54,7 @@ module Snuffle
 
     def html_report(summary)
       return unless options['format'] == 'html'
+      #return unless summary.object_candidates.count > 0
       results_files << Snuffle::Formatters::Html.new(summary).export
     end
 

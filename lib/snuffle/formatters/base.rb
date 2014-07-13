@@ -34,7 +34,7 @@ module Snuffle
       end
 
       def filename
-        base = summary.class_name.downcase.gsub(/[^a-zA-Z0-9]/, '_')
+        base = summary.class_filename
         base + file_extension
       end
 

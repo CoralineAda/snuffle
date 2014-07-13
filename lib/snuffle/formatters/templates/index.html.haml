@@ -48,7 +48,7 @@
               - if summary.object_candidates.count == 0
                 = summary.path_to_file
               - else
-                %a{href: "#{summary.path_to_file}.htm"}
+                %a{href: "source/#{summary.class_filename}.htm"}
                   = summary.path_to_file
             %td
               - if summary.class_name.size > 30
@@ -69,12 +69,3 @@
               by
               %a{href: "https://gitlab.com/coraline/snuffle", target: "_new"}
                 Snuffle
-    :javascript
-      $(document).ready(function(){
-        $('.output-table').dataTable({
-          bLengthChange: false,
-          iDisplayLength: 25000,
-          "order": [[2, "desc"]]
-        });
-      });
-

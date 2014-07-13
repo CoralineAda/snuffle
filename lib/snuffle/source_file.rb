@@ -23,6 +23,7 @@ module Snuffle
     def summary
       Summary.new(
         source_file: self,
+        source: self.source,
         class_name: class_name,
         path_to_file: self.path_to_file,
         object_candidates: object_candidates

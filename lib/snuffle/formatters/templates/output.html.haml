@@ -5,28 +5,27 @@
       Snuffle:
       = summary.class_name
     %link{href: "http://cdn.datatables.net/1.10.0/css/jquery.dataTables.css", rel: "stylesheet"}
+    %script{language: "javascript", src: "http://code.jquery.com/jquery-1.11.0.min.js", type: "text/javascript"}
+    %script{language: "javascript", src: "http://code.jquery.com/jquery-migrate-1.2.1.min.js", type: "text/javascript"}
+    %script{language: "javascript", src: "http://cdn.datatables.net/1.10.0/js/jquery.dataTables.js", type: "text/javascript"}
+
     %style{media: "screen", type: "text/css"}
-      body { background: #49525a; color: #fff; font-family: arial, sans-serif; padding: 2em; }
-      a:link, a:visited { color: #aaa }
-      div.file_meta { float: left; height: 3em; width: 30%; }
-      h1 { color:#fff; font-size: 1.25em; margin-top: .25em; }
-      h2 { color:#fff; font-size: .75em; margin-top: -1em; }
-      h3 { color:#fff; font-size: 1em; float: right; margin-top: 1em; }
-
+      = Rouge::Theme.find('thankful_eyes').render(scope: '.highlight')
+      body { line-height: 1.5em; background: #49525a; color: #fff; font-family: arial, sans-serif; font-size: 14px; padding: 2em; }
+      pre.lineno { margin-top: -1em !important;}
+      pre { line-height: 1.75em;}
+      span.highlighted { border: 1px solid #fff; padding: .25em; }
   %body
-    .container
 
-      = formatted_source
+    %p
+      Potential objects:
+
+    %ul
+      - summary.object_candidates.each do |candidate|
+        %li
+          = "#" + candidate.join(" #")
+
+    = source_lines
 
     %br
     %input{onclick: "history.back(-1)", type: "button", value: "Back"}
-
-    :javascript
-      $(document).ready(function(){
-        $('.output-table').dataTable({
-          bLengthChange: false,
-          iDisplayLength: 25000,
-          "order": [[2, "desc"]]
-        });
-      });
-
