@@ -10,12 +10,10 @@ module Snuffle
 
     desc "check PATH_TO_FILE [-f FORMAT] [-t MAX_COMPLEXITY_ALLOWED]", desc_text
     method_option :format, :type => :string, :default => 'text', :aliases => "-f"
-    method_option :threshold, :type => :numeric, :default => 0, :aliases => "-t"
 
     def check(path="./")
-      file_list(path).each{ |path_to_file| parse(path_to_file) }
+      file_list(path).each{ |path_to_file| report(path_to_file) }
       handle_index(summaries)
-      report
     end
 
     default_task :check
@@ -35,34 +33,33 @@ module Snuffle
     def formatter
       case options['format']
       when 'html'
-        Formatters::Html
+        ::Formatters::Html
       when 'csv'
-        Formatters::Csv
+        ::Formatters::Csv
       else
-        Formatters::Text
+        ::Formatters::Text
       end
     end
 
     def handle_index(file_summary)
       return unless options['format'] == 'html'
-      index = Formatters::HtmlIndex.new(file_summary)
+      index = ::Formatters::HtmlIndex.new(file_summary)
       self.last_file = "#{index.output_path}/#{index.filename}"
       index.export
     end
 
-    def parse(path_to_file, options={})
-      file = ParsedFile.new(path_to_file: path_to_file)
+    def report(path_to_file)
+      file = SourceFile.new(path_to_file: path_to_file)
+      parser = formatter.new(file)
       self.summaries ||= []
       self.summaries << file.summary.merge(results_file: parser.path_to_results)
       last_file = file
-    end
-
-    def report
-      unless options['format'] == "text"
-        puts "Results written to:"
+      if options['format'] == "text"
+        puts parser.export
+      else
+        puts "results written to:"
         puts last_file.present? && "#{last_file}" || results_files.join("\r\n")
       end
-      report_complexity
     end
 
     def results_files

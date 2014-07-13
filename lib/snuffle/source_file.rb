@@ -27,7 +27,26 @@ module Snuffle
       }
     end
 
+    def class_name
+      return @class_name if @class_name
+      @class_name = find_class(ast) || "?"
+    end
+
     private
+
+    def text_at(start_pos, end_pos)
+      source[start_pos..end_pos - 1]
+    end
+
+    def find_class(node)
+      return unless node.respond_to?(:type)
+      concat = []
+      if node.type == :module || node.type == :class
+        concat << text_at(node.loc.name.begin_pos, node.loc.name.end_pos)
+      end
+      concat << node.children.map{|child| find_class(child)}.compact
+      concat.flatten.select(&:present?).join('::')
+    end
 
     def cohorts
       CohortDetector.new(self.nodes).cohorts

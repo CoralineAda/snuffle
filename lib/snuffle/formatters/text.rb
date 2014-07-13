@@ -1,3 +1,5 @@
+require 'text-table'
+
 module Formatters
 
   class Text
@@ -5,16 +7,19 @@ module Formatters
     include Formatters::Base
 
     def header
-      "#{file.class_name}\t\t#{file.complexity}"
+      ["Class", "Object Candidates"]
     end
 
     def export
-      puts content
+      table = ::Text::Table.new
+      table.head = header
+      table.rows = rows
+      table.to_s
     end
 
     def rows
-      file.methods.map do |method|
-        "#{file.class_name}\t#{method.prefix}#{method.name}\t#{method.complexity}"
+      file.object_candidates.map do |candidate|
+        [file.class_name, candidate.join(", ")]
       end
     end
 
@@ -24,4 +29,3 @@ module Formatters
   end
 
 end
-
