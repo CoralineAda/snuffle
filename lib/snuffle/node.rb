@@ -10,6 +10,7 @@ module Snuffle
     scope :by_id,   lambda{|id| where(:id => id)}
     scope :by_type, lambda{|type| where(:type => type) }
     scope :hashes, {type: :hash}
+    scope :with_parent, lambda{|parent_id| where(parent_id: parent_id) }
 
     def self.nil
       new(type: :nil)
