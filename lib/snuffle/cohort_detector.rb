@@ -25,6 +25,7 @@ module Snuffle
         next unless cohort.values.count > 1
         cohort.neighbors = nodes_with_parent(outer_element.node.parent_id).map do |sibling|
           next unless inner_element = Element::Hash.materialize([sibling]).first
+          p inner_element.inspect
           print "."
           neighbor = cohort.neighbor.new(
             inner_element,
