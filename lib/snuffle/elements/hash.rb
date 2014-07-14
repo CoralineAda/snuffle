@@ -19,11 +19,11 @@ module Snuffle
       end
 
       def keys
-        node.children.map{ |child| child.children.first.name }
+        node.children.map{ |child| child.children.first && child.children.first.name }
       end
 
       def values
-        node.children.map{ |child| child.children.last.name }
+        node.children.map{ |child| child.children.last && child.children.last.name }
       end
 
       def key_matrix
@@ -35,7 +35,7 @@ module Snuffle
       end
 
       def sorted_pairs
-        keys.sort.inject({}) { |h, k| h[k] = pairs[k]; h}
+        keys.map(&:to_s).sort.inject({}) { |h, k| h[k] = pairs[k]; h}
       end
 
       def inspect

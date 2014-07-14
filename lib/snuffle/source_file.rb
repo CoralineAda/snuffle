@@ -17,7 +17,7 @@ module Snuffle
     end
 
     def object_candidates
-      cohorts.map(&:values)
+      @object_candidates ||= cohorts && cohorts.map(&:values) || []
     end
 
     def summary
@@ -47,16 +47,20 @@ module Snuffle
       if node.type == :module || node.type == :class
         concat << text_at(node.loc.name.begin_pos, node.loc.name.end_pos)
       end
-      concat << node.children.map{|child| find_class(child)}.compact
-      concat.flatten.select(&:present?).join('::')
+      if node.type == :class
+         return concat.flatten.select(&:present?).join('::')
+      else
+        concat << node.children.map{|child| find_class(child)}.compact
+      end
     end
 
     def cohorts
-      CohortDetector.new(self.nodes).cohorts
+      @cohorts ||= CohortDetector.new(self.nodes).cohorts
     end
 
     def ast
       @ast ||= Parser::CurrentRuby.parse(source)
+      @ast
     end
 
     def extract_nodes_from(ast_node, nodes=Ephemeral::Collection.new("Snuffle::Node"), parent_id=:root)
@@ -84,8 +88,10 @@ module Snuffle
       return if node.nil?
       return node unless node.respond_to?(:children)
       if node.respond_to?(:loc) && node.loc.respond_to?(:name)
-        name = node.loc.name
-        return source[name.begin_pos, name.end_pos - 1]
+        name_coords = node.loc.name
+        name = source[name_coords.begin_pos, [name_coords.end_pos - 1, 20].max]
+        return unless name =~ /[a-zA-Z]/
+        return name
       else
         return name_from(node.children.last)
       end

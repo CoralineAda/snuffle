@@ -49,17 +49,19 @@ module Snuffle
 
     def cvs_report(summary)
       return unless options['format'] == 'csv'
+      return unless summary.object_candidates.count > 0
       results_files << Snuffle::Formatters::Csv.new(summary).export
     end
 
     def html_report(summary)
       return unless options['format'] == 'html'
-      #return unless summary.object_candidates.count > 0
+      return unless summary.object_candidates.count > 0
       results_files << Snuffle::Formatters::Html.new(summary).export
     end
 
     def text_report(summary)
       return unless options['format'] == 'text'
+      puts
       puts Snuffle::Formatters::Text.new(summary).export
     end
 

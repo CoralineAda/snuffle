@@ -12,15 +12,26 @@
     %style{media: "screen", type: "text/css"}
       = Rouge::Theme.find('thankful_eyes').render(scope: '.highlight')
       body { line-height: 1.5em; background: #49525a; color: #fff; font-family: arial, sans-serif; font-size: 14px; padding: 2em; }
-      pre.lineno { margin-top: -1em !important;}
+      pre.lineno { margin-top: -1.4em !important;}
       pre { line-height: 1.75em;}
-      span.highlighted { border: 1px solid #fff; padding: .25em; }
+      = #span.highlighted { border: 1px solid #fff; padding: .25em; }
+      div.file_meta { padding: 1em; border-radius: 5px; background: #000; height: 3em; width: 98%; }
+      h1 { color:#fff; font-size: 1.25em; margin-top: .25em; }
+      h2 { color:#fff; font-size: .75em; margin-top: -1em; }
+      h3 { color:#fff; font-size: 1.1em;margin-top: 1em; }
+      = ".indented {margin-left: 4em; }"
   %body
 
-    %p
+    .file_meta
+      %h1
+        = summary.class_name
+      %h2
+        = summary.path_to_file
+
+    %h3.indented
       Potential objects:
 
-    %ul
+    %ul.indented
       - summary.object_candidates.each do |candidate|
         - if candidate.length > 0
           %li

@@ -25,7 +25,8 @@ module Snuffle
     end
 
     def name
-      @name.to_s.gsub(/[^a-zA-Z0-9\_]/,'')
+      @name ||= @name.to_s.gsub(/[^a-zA-Z0-9\_]/,'').gsub(/[ ]+/, ' ').gsub(/\_+, '_'/, '_')
+      @name
     end
 
     def parent

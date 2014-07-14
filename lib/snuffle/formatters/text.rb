@@ -14,13 +14,13 @@ module Snuffle
       def export
         table = ::Text::Table.new
         table.head = header
-        table.rows = rows
+        table.rows = rows.present? && (rows.size == 3) && rows || [["", "", ""]]
         table.to_s
       end
 
       def rows
         summary.object_candidates.map do |candidate|
-          [summary.path_to_file, summary.class_name, "##{candidate.join(", #")}"]
+          [summary.path_to_file, summary.class_name, "#{candidate.join(', ')}"]
         end
       end
 
