@@ -26,12 +26,8 @@ module Snuffle
         node.children.map{ |child| child.children.last && child.children.last.name }
       end
 
-      def key_matrix
+      def matrix
         keys.map(&:to_s).sort.map(&:hash)
-      end
-
-      def value_matrix
-        values.map(&:to_s).sort.map(&:hash)
       end
 
       def sorted_pairs

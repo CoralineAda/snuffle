@@ -10,7 +10,7 @@ module Snuffle
     end
 
     def near_neighbors
-      neighbors.select{|n| n.distance < 0.5}
+      neighbors.select{|n| n.distance <= 1.0}
     end
 
     def neighbor=(element, distance)

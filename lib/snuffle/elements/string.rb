@@ -18,7 +18,7 @@ module Snuffle
         node.children.map{ |child| child.children.last.name }.select{|v| v.is_a?(Symbol)}
       end
 
-      def value_matrix
+      def matrix
         values.sort.map(&:hash)
       end
 
