@@ -5,25 +5,28 @@ module Snuffle
     include PoroPlus
     attr_accessor :element, :neighbors
 
-    MAX_NEIGHBOR_DISTANCE = 3.0
+    def self.from(nodes)
+      Element::Hash.materialize(nodes.hashes.to_a).inject([]) do |cohorts, element|
+        cohort = Cohort.new(element: element)
+        cohorts << cohort if cohort.values.count > 1 && cohort.near_neighbors.count > 0
+        cohorts
+      end
+    end
 
     def has_near_neighbors?
       near_neighbors.present?
     end
 
     def near_neighbors
-      @near_neighbors ||= neighbors.select{|n| n.distance <= MAX_NEIGHBOR_DISTANCE && n.distance > 0}
+      @near_neighbors ||= neighbors.select{ |n| (n.values & values).size == values.size }
     end
 
     def neighbors
-      @neighbors ||= element.node.siblings.map do |sibling|
-        sibling_element = Element::Hash.materialize([sibling]).first
-        neighbor.new(sibling_element, distance(element.matrix, sibling_element.matrix))
-      end
+      @neighbors ||= element.node.siblings.map{|sibling| Element::Hash.materialize([sibling]).first}
     end
 
     def values
-      self.element.values.map(&:to_s).sort
+      @values ||= self.element.values
     end
 
     def neighbor

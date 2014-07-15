@@ -8,24 +8,17 @@ module Snuffle
     attr_accessor :id, :name, :type, :child_ids, :parent_id
 
     scope :by_id,       lambda{|id| where(:id => id)}
-    scope :by_type,     lambda{|type| where(:type => type) }
+    scope :by_type,     lambda{|type| where(:type => type)}
     scope :with_parent, lambda{|parent_id| where(parent_id: parent_id) }
+    scope :hashes,      {type: :hash}
 
     def self.nil
       new(type: :nil)
     end
 
     def initialize(*args, &block)
-      @id = id
+      @id = SecureRandom.uuid
       super
-    end
-
-    def id
-      @id ||= SecureRandom.uuid
-    end
-
-    def name
-      @name ||= @name.to_s.gsub(/[^a-zA-Z0-9\_]/,'').gsub(/[ ]+/, ' ').gsub(/\_+, '_'/, '_')
     end
 
     def parent

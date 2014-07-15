@@ -20,7 +20,7 @@ class Customer
   end
 
   def neighborhood
-#   make_neighborhood_api_call(state: self.state, city: self.city, postal_code: self.postal_code)
+   make_neighborhood_api_call(state: self.state, city: self.city, postal_code: self.postal_code)
   end
 
   def something_else

@@ -19,7 +19,7 @@ module Snuffle
     end
 
     def object_candidates
-      @object_candidates ||= cohorts && cohorts.map(&:values) || []
+      @object_candidates ||= Cohort.from(self.nodes).map(&:values)
     end
 
     def summary
@@ -56,13 +56,8 @@ module Snuffle
       end
     end
 
-    def cohorts
-      @cohorts ||= CohortDetector.new(self.nodes).cohorts
-    end
-
     def ast
       @ast ||= Parser::CurrentRuby.parse(source)
-      @ast
     end
 
     def extract_nodes_from(ast_node, nodes=Ephemeral::Collection.new("Snuffle::Node"), parent_id=:root)
@@ -91,7 +86,7 @@ module Snuffle
       return node unless node.respond_to?(:children)
       if node.respond_to?(:loc) && node.loc.respond_to?(:name)
         name_coords = node.loc.name
-        name = source[name_coords.begin_pos, [name_coords.end_pos - 1, 20].max]
+        name = source[name_coords.begin_pos, name_coords.end_pos - 1]
         return unless name =~ /[a-zA-Z]/
         return name
       else

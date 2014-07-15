@@ -5,9 +5,7 @@ require 'fileutils'
 require 'haml'
 
 require_relative "snuffle/version"
-require_relative "snuffle/analysis"
 require_relative "snuffle/cohort"
-require_relative "snuffle/cohort_detector"
 require_relative "snuffle/cli"
 require_relative "snuffle/formatters/base"
 require_relative "snuffle/formatters/csv"
@@ -16,11 +14,8 @@ require_relative "snuffle/formatters/html_index"
 require_relative "snuffle/formatters/text"
 require_relative "snuffle/node"
 require_relative "snuffle/source_file"
-require_relative "snuffle/source_parser"
 require_relative "snuffle/summary"
 require_relative "snuffle/elements/hash"
-require_relative "snuffle/elements/string"
-require_relative "snuffle/util/correlation"
 require_relative "snuffle/util/histogram"
 
 module Snuffle

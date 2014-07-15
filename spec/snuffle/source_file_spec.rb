@@ -18,7 +18,6 @@ describe Snuffle::SourceFile do
       it "does not match hash values with non-hash values" do
         args = ['city', 'postal_code', 'state']
         values = program_2.summary.object_candidates
-        p values
         expect(values.include?(args)).to be_falsey
       end
 

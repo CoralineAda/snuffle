@@ -15,7 +15,7 @@ module Snuffle
       end
 
       def pairs
-        @pairs ||= values.zip(keys).inject({}){|hash, pair| hash[pair[0]] = pair[1]; hash}
+        @pairs ||= keys.zip(values).inject({}){|hash, pair| hash[pair[0]] = pair[1]; hash}
       end
 
       def keys
@@ -23,19 +23,11 @@ module Snuffle
       end
 
       def values
-        node.children.map{ |child| child.children.last && child.children.last.name }
-      end
-
-      def matrix
-        keys.map(&:to_s).sort.map(&:bytes).flatten
-      end
-
-      def sorted_pairs
-        keys.map(&:to_s).sort.inject({}) { |h, k| h[k] = pairs[k]; h}
+        node.children.map{ |child| child.children.last && child.children.last.name }.map(&:to_s).sort
       end
 
       def inspect
-        sorted_pairs
+        pairs
       end
 
     end

@@ -14,7 +14,7 @@ module Snuffle
       def export
         table = ::Text::Table.new
         table.head = header
-        table.rows = rows.present? && (rows.size == 3) && rows || [["", "", ""]]
+        table.rows = rows
         table.to_s
       end
 
