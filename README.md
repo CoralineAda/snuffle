@@ -4,6 +4,10 @@ Snuffle analyzes source code to identify "data clumps", clusters of attributes
 that are often used together. It uses this analysis to propose objects that
 may be extracted from a given class.
 
+## TODO
+
+Ignore data clumps called in "loose" class methods (e.g. attr_accessor)
+
 ## Installation
 
 Add this line to your application's Gemfile:
