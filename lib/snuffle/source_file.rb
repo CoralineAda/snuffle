@@ -10,8 +10,9 @@ module Snuffle
 
     attr_accessor :path_to_file, :source
 
-    def source
-      @source ||= File.read(self.path_to_file)
+    def class_name
+      return @class_name if @class_name
+      @class_name = find_class(ast) || "?"
     end
 
     def nodes
@@ -22,6 +23,10 @@ module Snuffle
       @object_candidates ||= Cohort.from(self.nodes).map(&:values)
     end
 
+    def source
+      @source ||= File.read(self.path_to_file)
+    end
+
     def summary
       Summary.new(
         source_file: self,
@@ -30,11 +35,6 @@ module Snuffle
         path_to_file: self.path_to_file,
         object_candidates: object_candidates
       )
-    end
-
-    def class_name
-      return @class_name if @class_name
-      @class_name = find_class(ast) || "?"
     end
 
     private
@@ -49,11 +49,10 @@ module Snuffle
       if node.type == :module || node.type == :class
         concat << text_at(node.loc.name.begin_pos, node.loc.name.end_pos)
       end
-      if node.type == :class
-         return concat.flatten.select(&:present?).join('::')
-      else
+      unless node.type == :class
         concat << node.children.map{|child| find_class(child)}.compact
       end
+      concat.flatten.select(&:present?).join('::')
     end
 
     def ast

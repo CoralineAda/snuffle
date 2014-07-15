@@ -6,7 +6,8 @@ may be extracted from a given class.
 
 ## TODO
 
-Ignore data clumps called in "loose" class methods (e.g. attr_accessor)
+* Ignore data clumps called in "loose" class methods (e.g. attr_accessor)
+* Consider weighting based on match type
 
 ## Installation
 
@@ -24,18 +25,13 @@ Or install it yourself as:
 
 ## Usage
 
-    > sp = Snuffle::SourceParser.new("./spec/fixtures/program_2.rb")
-    > sp.report
-     => [
-          {
-            :source_file=>"./spec/fixtures/program_2.rb",
-            :object_candidates=> [
-              [:city, :postal_code, :state],
-              [:city, :state],
-              [:company_name, :customer_name]
-            ]
-          }
-        ]
+    $ snuffle check example.rb
+
+    +----------------------------+------------+-----------------------------+
+    |          Filename          | Host Class | Candidate Object Attributes |
+    +----------------------------+------------+-----------------------------+
+    | example.rb                 | Customer   | company_name, customer_name |
+    +----------------------------+------------+-----------------------------+
 
 ## Contributing
 
