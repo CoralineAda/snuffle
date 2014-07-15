@@ -15,15 +15,15 @@ class Customer
   end
 
   def get_coords_for_address
-    fake_api_call(city: city, state: state, postal_code: postal_code)
+ #   fake_api_call(city: city, state: state, postal_code: postal_code)
   end
 
   def neighborhood
-#   make_neighborhood_api_call(state: self.state, city: self.city, postal_code: self.postal_code)
+    make_neighborhood_api_call(state: self.state, city: self.city, postal_code: self.postal_code)
   end
 
   def something_else
-    fake_neighborhood_api_call(city: self.city, state: self.state)
+#    fake_neighborhood_api_call(city: self.city, state: self.state)
   end
 
   def and_something_else_again

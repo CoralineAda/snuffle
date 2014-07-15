@@ -27,7 +27,7 @@ module Snuffle
       end
 
       def matrix
-        keys.map(&:to_s).sort.map(&:hash)
+        keys.map(&:to_s).sort.map(&:bytes).flatten
       end
 
       def sorted_pairs

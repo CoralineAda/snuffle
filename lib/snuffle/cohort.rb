@@ -5,16 +5,21 @@ module Snuffle
     include PoroPlus
     attr_accessor :element, :neighbors
 
+    MAX_NEIGHBOR_DISTANCE = 3.0
+
     def has_near_neighbors?
       near_neighbors.present?
     end
 
     def near_neighbors
-      neighbors.select{|n| n.distance <= 1.0}
+      @near_neighbors ||= neighbors.select{|n| n.distance <= MAX_NEIGHBOR_DISTANCE && n.distance > 0}
     end
 
-    def neighbor=(element, distance)
-      @neighbors << neighbor(element, distance)
+    def neighbors
+      @neighbors ||= element.node.siblings.map do |sibling|
+        sibling_element = Element::Hash.materialize([sibling]).first
+        neighbor.new(sibling_element, distance(element.matrix, sibling_element.matrix))
+      end
     end
 
     def values
@@ -25,8 +30,8 @@ module Snuffle
       Struct.new(:element, :distance)
     end
 
-    def neighbors
-      @neighbors ||= []
+    def distance(primary_matrix, token_matrix)
+      Snuffle::Util::Correlation.distance(primary_matrix, token_matrix)
     end
 
   end

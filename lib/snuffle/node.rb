@@ -7,9 +7,8 @@ module Snuffle
 
     attr_accessor :id, :name, :type, :child_ids, :parent_id
 
-    scope :by_id,   lambda{|id| where(:id => id)}
-    scope :by_type, lambda{|type| where(:type => type) }
-    scope :hashes, {type: :hash}
+    scope :by_id,       lambda{|id| where(:id => id)}
+    scope :by_type,     lambda{|type| where(:type => type) }
     scope :with_parent, lambda{|parent_id| where(parent_id: parent_id) }
 
     def self.nil
@@ -27,11 +26,14 @@ module Snuffle
 
     def name
       @name ||= @name.to_s.gsub(/[^a-zA-Z0-9\_]/,'').gsub(/[ ]+/, ' ').gsub(/\_+, '_'/, '_')
-      @name
     end
 
     def parent
       Snuffle::Node.where(id: self.parent_id).first
+    end
+
+    def siblings
+      @siblings ||= Snuffle::Node.by_type(self.type).to_a - [self]
     end
 
     def children
