@@ -8,7 +8,7 @@ module Snuffle
 
     include PoroPlus
 
-    attr_accessor :path_to_file, :source
+    attr_accessor :path_to_file, :source, :lines_of_code
 
     def class_name
       return @class_name if @class_name
@@ -24,7 +24,15 @@ module Snuffle
     end
 
     def source
-      @source ||= File.read(self.path_to_file)
+      return @source if @source
+      end_pos = 0
+      self.lines_of_code = []
+      @source = File.readlines(self.path_to_file).each_with_index do |line, index|
+        start_pos = end_pos + 1
+        end_pos += line.size
+        self.lines_of_code << LineOfCode.new(index: index, range: (start_pos..end_pos))
+        line
+      end.join("\r\n")
     end
 
     def summary

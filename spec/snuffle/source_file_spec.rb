@@ -30,17 +30,17 @@ describe Snuffle::SourceFile do
     let(:source_file) { Snuffle::SourceFile.new }
 
     it "picks up a non-nested class name" do
-      source_file.stub(:source) { top_level }
+      source_file.source = top_level
       expect(source_file.class_name).to eq("Foo")
     end
 
     it "picks up a namespaced class name" do
-      source_file.stub(:source) { namespaced_1 }
+      source_file.source = namespaced_1
       expect(source_file.class_name).to eq("Foo::Bar")
     end
 
     it "picks up a class name inside nested modules" do
-      source_file.stub(:source) { namespaced_2 }
+      source_file.source = namespaced_2
       expect(source_file.class_name).to eq("Foo::Bar::Baz")
     end
 
