@@ -15,19 +15,6 @@ module Snuffle
         lexer = Rouge::Lexers::Ruby.new
       end
 
-      def preprocessed
-        preprocessed = formatter.format(lexer.lex(summary.source))
-        summary.object_candidates.flatten.uniq.compact.each do |keyword|
-          next unless keyword.present?
-          begin
-            preprocessed.gsub!(/\b#{keyword}\b/, "<span class='highlighted'>#{keyword.gsub(/[^a-zA-Z0-9\_]/,'')}</span>")
-          rescue
-            preprocessed
-          end
-        end
-        preprocessed
-      end
-
       def content
         Haml::Engine.new(output_template).render(
           Object.new, {
