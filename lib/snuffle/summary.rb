@@ -2,7 +2,7 @@ module Snuffle
 
   class Summary
     include PoroPlus
-    attr_accessor :class_name, :path_to_file, :object_candidates, :source
+    attr_accessor :class_name, :path_to_file, :cohorts, :source
 
     def class_filename
       self.class_name.downcase.gsub(' ', '_')

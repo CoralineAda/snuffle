@@ -43,9 +43,9 @@
             Object Candidates
       %tbody
         - summaries.each_with_index do |summary, i|
-          %tr{class: "#{i % 2 == 1 ? 'odd' : 'even'} #{summary.object_candidates.count == 0 ? 'faint' : ''}"}
+          %tr{class: "#{i % 2 == 1 ? 'odd' : 'even'} #{summary.cohorts.count == 0 ? 'faint' : ''}"}
             %td
-              - if summary.object_candidates.count == 0
+              - if summary.cohorts.count == 0
                 = summary.path_to_file
               - else
                 %a{href: "source/#{summary.class_filename}.htm"}
@@ -57,7 +57,7 @@
               - else
                 = summary.class_name
             %td
-              = summary.object_candidates.count
+              = summary.cohorts.count
       %tfoot
         %tr
           %td.center{colspan: 3}

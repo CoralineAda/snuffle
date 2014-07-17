@@ -32,10 +32,12 @@
       Potential objects:
 
     %ul.indented
-      - summary.object_candidates.each do |candidate|
-        - if candidate.length > 0
+      - summary.cohorts.group_by{|c| c.values.sort }.each do |values, cohorts|
+        - if cohorts.count > 0
           %li
-            = candidate.map{|c| "##{c}" }.join(", ")
+            = values.map{|c| "##{c}" }.join(", ")
+            %br
+            = "Lines #{cohorts.map(&:line_numbers).join(', ')}"
 
     = source_lines
 

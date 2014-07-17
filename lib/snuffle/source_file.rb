@@ -19,8 +19,8 @@ module Snuffle
       @nodes ||= extract_nodes_from(ast)
     end
 
-    def object_candidates
-      @object_candidates ||= Cohort.from(self.nodes).map(&:values)
+    def cohorts
+      @cohorts ||= Cohort.from(self.nodes)
     end
 
     def source
@@ -30,7 +30,7 @@ module Snuffle
       @source = File.readlines(self.path_to_file).each_with_index do |line, index|
         start_pos = end_pos + 1
         end_pos += line.size
-        self.lines_of_code << LineOfCode.new(index: index, range: (start_pos..end_pos))
+        self.lines_of_code << LineOfCode.new(line_number: index + 1, range: (start_pos..end_pos))
         line
       end.join
     end
@@ -41,7 +41,7 @@ module Snuffle
         source: self.source,
         class_name: class_name,
         path_to_file: self.path_to_file,
-        object_candidates: object_candidates,
+        cohorts: cohorts,
         source: self.source
       )
     end
@@ -71,10 +71,12 @@ module Snuffle
     def extract_nodes_from(ast_node, nodes=Ephemeral::Collection.new("Snuffle::Node"), parent_id=:root)
       if name = name_from(ast_node)
         if ast_node.respond_to?(:type)
+          lines = LineOfCode.containing(lines_of_code, ast_node.loc.expression.begin_pos, ast_node.loc.expression.end_pos)
           extracted_node = Snuffle::Node.new(
             type: ast_node.type,
             parent_id: parent_id,
-            name: name_from(ast_node)
+            name: name_from(ast_node),
+            line_numbers: lines.map(&:line_number)
           )
         else
           extracted_node = Snuffle::Node.new(
