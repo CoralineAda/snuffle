@@ -6,10 +6,12 @@ module Snuffle
 
       def self.included(klass)
         klass.send(:attr_accessor, :summary)
+        klass.send(:attr_accessor, :source)
       end
 
-      def initialize(summary)
+      def initialize(summary, source="")
         self.summary = summary
+        self.source = source
       end
 
       def content

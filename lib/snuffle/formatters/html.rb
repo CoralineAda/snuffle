@@ -30,6 +30,10 @@ module Snuffle
         File.read(File.dirname(__FILE__) + "/templates/output.html.haml")
       end
 
+      def preprocessed
+        formatter.format(lexer.lex(source))
+      end
+
       def root_path
         "doc/snuffle/source"
       end

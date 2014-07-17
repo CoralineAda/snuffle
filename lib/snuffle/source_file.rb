@@ -32,7 +32,7 @@ module Snuffle
         end_pos += line.size
         self.lines_of_code << LineOfCode.new(index: index, range: (start_pos..end_pos))
         line
-      end.join("\r\n")
+      end.join
     end
 
     def summary
@@ -41,7 +41,8 @@ module Snuffle
         source: self.source,
         class_name: class_name,
         path_to_file: self.path_to_file,
-        object_candidates: object_candidates
+        object_candidates: object_candidates,
+        source: self.source
       )
     end
 

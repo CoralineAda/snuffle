@@ -15,7 +15,7 @@ module Snuffle
       summaries = []
       file_list(path).each do |path_to_file|
         summary = Snuffle::SourceFile.new(path_to_file: path_to_file).summary
-        report(summary)
+        report(summary, summary.source)
         summaries << summary
       end
       create_html_index(summaries)
@@ -36,10 +36,10 @@ module Snuffle
       end
     end
 
-    def report(summary)
+    def report(summary, source)
       text_report(summary)
       cvs_report(summary)
-      html_report(summary)
+      html_report(summary, source)
     end
 
     def create_html_index(summaries)
@@ -53,10 +53,10 @@ module Snuffle
       results_files << Snuffle::Formatters::Csv.new(summary).export
     end
 
-    def html_report(summary)
+    def html_report(summary, source)
       return unless options['format'] == 'html'
       return unless summary.object_candidates.count > 0
-      results_files << Snuffle::Formatters::Html.new(summary).export
+      results_files << Snuffle::Formatters::Html.new(summary, source).export
     end
 
     def text_report(summary)
