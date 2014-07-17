@@ -8,7 +8,7 @@ module Snuffle
       attr_accessor :summaries
 
       def initialize(summaries)
-        self.summaries = summaries.sort{|a,b| a.object_candidates.count <=> b.object_candidates.count}.reverse
+        self.summaries = summaries.sort{|a,b| a.cohorts.count <=> b.cohorts.count}.reverse
       end
 
       def header

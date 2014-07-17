@@ -95,10 +95,13 @@ module Snuffle
       return if node.nil?
       return node unless node.respond_to?(:children)
       if node.respond_to?(:loc) && node.loc.respond_to?(:name)
-        name_coords = node.loc.name
-        name = source[name_coords.begin_pos, name_coords.end_pos - 1]
-        return unless name =~ /[a-zA-Z]/
-        return name
+        if name_coords = node.loc.name
+          name = source[name_coords.begin_pos, name_coords.end_pos - 1]
+          return unless name =~ /[a-zA-Z]/
+          return name
+        else
+          "?"
+        end
       else
         return name_from(node.children.last)
       end
