@@ -6,8 +6,8 @@ may be extracted from a given class.
 
 ## TODO
 
-* Report cohorts with line numbers
 * Ignore data clumps called in "loose" class methods (e.g. attr_accessor)
+* Match on string concatenation
 * Consider weighting based on match type
 
 ## Installation

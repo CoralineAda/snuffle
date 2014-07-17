@@ -29,7 +29,7 @@
         = summary.path_to_file
 
     %h3.indented
-      Potential objects:
+      Candidate object attributes:
 
     %ul.indented
       - summary.cohorts.group_by{|c| c.values.sort }.each do |values, cohorts|
@@ -37,7 +37,7 @@
           %li
             = values.map{|c| "##{c}" }.join(", ")
             %br
-            = "Lines #{cohorts.map(&:line_numbers).join(', ')}"
+            = "Line(s): #{cohorts.map(&:line_numbers).join(', ')}"
 
     = source_lines
 
