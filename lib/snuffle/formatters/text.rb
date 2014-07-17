@@ -19,8 +19,8 @@ module Snuffle
       end
 
       def rows
-        summary.object_candidates.map do |candidate|
-          [summary.path_to_file, summary.class_name, "#{candidate.join(', ')}"]
+        summary.cohorts.group_by{|c| c.values}.map do |cohort|
+          [summary.path_to_file, summary.class_name, "#{cohort[0].join(', ')}", cohort[1].map(&:line_numbers).join(", ")]
         end
       end
 

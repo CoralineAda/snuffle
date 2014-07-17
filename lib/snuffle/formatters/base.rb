@@ -19,7 +19,7 @@ module Snuffle
       end
 
       def columns
-        ["filename", "host class", "candidate object attributes"]
+        ["filename", "host class", "candidate object attributes", "source line numbers"]
       end
 
       def root_path
