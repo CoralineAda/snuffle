@@ -14,7 +14,7 @@
       body { line-height: 1.5em; background: #49525a; color: #fff; font-family: arial, sans-serif; font-size: 14px; padding: 2em; }
       pre.lineno { margin-top: -1.4em !important;}
       pre { line-height: 1.75em;}
-      = #span.highlighted { border: 1px solid #fff; padding: .25em; }
+      span.highlighted { background: rgba(200, 0, 0, .4); padding-left: 1em; border-radius: 100px; display: inline-block; position: absolute; left: 0px; padding-right: 90%}
       div.file_meta { padding: 1em; border-radius: 5px; background: #000; height: 3em; width: 98%; }
       h1 { color:#fff; font-size: 1.25em; margin-top: .25em; }
       h2 { color:#fff; font-size: .75em; margin-top: -1em; }
@@ -43,3 +43,14 @@
 
     %br
     %input{onclick: "history.back(-1)", type: "button", value: "Back"}
+
+    :javascript
+
+      var line_numbers = #{summary.cohorts.map(&:line_numbers).flatten};
+
+      $('pre.lineno').html($('pre.lineno').html().split(/\s+/).map(function(val){ if (line_numbers.indexOf(parseInt(val)) > -1) { return "<span class='highlighted'>" + val + "</span>\n" } else { return "<span class='foo'>" + val + "</span>\n"};}))
+
+      for (i = 0; i <= line_numbers; i ++) {
+        $('.code pre').html($('.code pre').html().split(/\s+/)[i].html("<span class='highlighted'>" + i + "</span>\n"))
+      }
+
