@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Coraline Ada Ehmke", "Kerri Miller"]
   spec.email         = ["coraline@idolhands.com"]
   spec.summary       = %q{Snuffle detects data clumps in your Ruby code.}
-  spec.description   = %q{Snuffle detects data clumbs and other hints of extractable objects in your Ruby code.}
+  spec.description   = %q{Snuffle detects data clumps and other hints of extractable objects in your Ruby code.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
