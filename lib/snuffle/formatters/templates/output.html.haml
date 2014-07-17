@@ -37,7 +37,7 @@
           %li
             = values.map{|c| "##{c}" }.join(", ")
             %br
-            = "Line(s): #{cohorts.map(&:line_numbers).join(', ')}"
+            = ":#{cohorts.map(&:line_numbers).join(', :')}"
 
     = source_lines
 
