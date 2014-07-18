@@ -21,51 +21,62 @@
       td.center { text-align: center; }
       tfoot { background: #000; border-top: 10px solid #000; font-family: courier; margin-top: 4em; font-size: .75em;  }
       a:link, a:visited { color: #fff }
-      div.file_meta { float: left; height: 3em; width: 30%; }
       h1 { color:#fff; font-size: 1.25em; margin-top: .25em; }
       h2 { color:#fff; font-size: .75em; margin-top: -1em; }
-      h3 { color:#fff; font-size: 1em; float: right; margin-top: 1em; }
+      h3 { color:#fff; font-size: 1.1em;margin-top: 1em; }
+      li { margin-bottom: 1em;}
+      div.file_meta { padding: 1em; border-radius: 5px; background: #444; height: 3.5em; width: 98%; border: .5em solid #000;}
+      div.file_listing { padding: .5em; border-radius: 5px; background: #222; width: 98%; border: 1px solid #000;}
+      = ".summary {padding: 1em; border-radius: 5px; background: #4c5d62; width: 98%; border: .5em solid #000;}"
+      = ".clear { clear: both; }"
+      = ".indented {margin-left: 1em; }"
 
   %body
-    %table{class: "output-table"}
-      %thead
-        %tr.header
-          %th{colspan: 3}
-            .file_meta
-              %h1
-                Snuffle Analysis
-        %tr
-          %th
-            File
-          %th
-            Host Module/Class
-          %th
-            Object Candidates
-      %tbody
-        - summaries.each_with_index do |summary, i|
-          %tr{class: "#{i % 2 == 1 ? 'odd' : 'even'} #{summary.cohorts.count == 0 ? 'faint' : ''}"}
-            %td
-              - if summary.cohorts.count == 0
-                = summary.path_to_file
-              - else
-                %a{href: "source/#{summary.class_filename}.htm"}
+
+    .file_meta
+      %h1
+        Snuffle Analysis
+
+    %br.clear
+
+    .summary
+
+      %table{class: "output-table"}
+
+        %thead
+          %tr
+            %th
+              File
+            %th
+              Host Module/Class
+            %th
+              Object Candidates
+        %tbody
+          - summaries.each_with_index do |summary, i|
+            %tr{class: "#{i % 2 == 1 ? 'odd' : 'even'} #{summary.cohorts.count == 0 ? 'faint' : ''}"}
+              %td
+                - if summary.cohorts.count == 0
                   = summary.path_to_file
-            %td
-              - if summary.class_name.size > 30
-                = "..."
-                = summary.class_name[-29..-1]
-              - else
-                = summary.class_name
-            %td
-              = summary.cohorts.count
-      %tfoot
-        %tr
-          %td.center{colspan: 3}
-            %em
-              Analyzed on
-              = date
-              at
-              = time
-              by
-              %a{href: "https://gitlab.com/coraline/snuffle", target: "_new"}
-                Snuffle
+                - else
+                  %a{href: "source/#{summary.class_filename}.htm"}
+                    = summary.path_to_file
+              %td
+                - if summary.class_name.size > 30
+                  = "..."
+                  = summary.class_name[-29..-1]
+                - else
+                  = summary.class_name
+              %td
+                = summary.cohorts.count
+
+    %br.clear
+
+    %div.file_listing.center
+      %em
+        Analyzed on
+        = date
+        at
+        = time
+        by
+        %a{href: "https://gitlab.com/coraline/snuffle", target: "_new"}
+          Snuffle

@@ -40,12 +40,12 @@ describe Snuffle::SourceFile do
       expect(source_file.class_name).to eq("Foo::Bar")
     end
 
-    xit "picks up a class name inside nested modules" do
+    it "picks up a class name inside nested modules" do
       source_file.source = namespaced_2
       expect(source_file.class_name).to eq("Foo::Bar::Baz")
     end
 
-    it "picks up crazily nested names" do
+    xit "picks up crazily nested names" do
       source_file.source = namespaced_3
       expect(source_file.class_name).to eq("Foo::Bar::Baz")
     end

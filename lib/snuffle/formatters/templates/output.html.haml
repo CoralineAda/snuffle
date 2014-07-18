@@ -15,11 +15,16 @@
       pre.lineno { margin-top: -1.4em !important;}
       pre { line-height: 1.75em;}
       span.highlighted { background: rgba(200, 0, 0, .4); padding-left: 1em; border-radius: 100px; display: inline-block; position: absolute; left: 0px; padding-right: 90%}
-      div.file_meta { padding: 1em; border-radius: 5px; background: #000; height: 3em; width: 98%; }
       h1 { color:#fff; font-size: 1.25em; margin-top: .25em; }
       h2 { color:#fff; font-size: .75em; margin-top: -1em; }
       h3 { color:#fff; font-size: 1.1em;margin-top: 1em; }
-      = ".indented {margin-left: 4em; }"
+      li { margin-bottom: 1em;}
+      div.file_meta { padding: 1em; border-radius: 5px; background: #444; height: 3.5em; width: 98%; border: .5em solid #000;}
+      div.file_listing { padding: .5em; border-radius: 5px; background: #222; width: 98%; border: 1px solid #000;}
+      = ".summary {padding: 1em; border-radius: 5px; background: #4c5d62; width: 98%; border: .5em solid #000;}"
+      = ".clear { clear: both; }"
+      = ".indented {margin-left: 1em; }"
+
   %body
 
     .file_meta
@@ -28,18 +33,25 @@
       %h2
         = summary.path_to_file
 
-    %h3.indented
-      Candidate object attributes:
+    %br.clear
 
-    %ul.indented
-      - summary.cohorts.group_by{|c| c.values.sort }.each do |values, cohorts|
-        - if cohorts.count > 0
-          %li
-            = values.map{|c| "##{c}" }.join(", ")
-            %br
-            = ":#{cohorts.map(&:line_numbers).join(', :')}"
+    %div.summary
+      %h3.indented
+        Candidate object attributes:
 
-    = source_lines
+      %ul.indented
+        - summary.cohorts.group_by{|c| c.values.sort }.each do |values, cohorts|
+          - if cohorts.count > 0
+            %li
+              = values.map{|c| "##{c}" }.join(", ")
+              %br
+              = ":#{cohorts.map(&:line_numbers).join(', :')}"
+      %br.clear
+
+    %br.clear
+
+    .file_listing
+      = source_lines
 
     %br
     %input{onclick: "history.back(-1)", type: "button", value: "Back"}
