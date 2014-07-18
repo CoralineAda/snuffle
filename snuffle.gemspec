@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["coraline@idolhands.com"]
   spec.summary       = %q{Snuffle detects data clumps in your Ruby code.}
   spec.description   = %q{Snuffle detects data clumps and other hints of extractable objects in your Ruby code.}
-  spec.homepage      = ""
+  spec.homepage      = "https://gitlab.com/coraline/snuffle/tree/master"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
