@@ -2,7 +2,7 @@
 %html
   %head
     %title
-      Fukuzatsu
+      Snuffle
     %link{href: "http://cdn.datatables.net/1.10.0/css/jquery.dataTables.css", rel: "stylesheet"}
 
     %style{media: "screen", type: "text/css"}
@@ -26,7 +26,7 @@
       h3 { color:#fff; font-size: 1.1em;margin-top: 1em; }
       li { margin-bottom: 1em;}
       div.file_meta { padding: 1em; border-radius: 5px; background: #444; height: 3.5em; width: 98%; border: .5em solid #000;}
-      div.file_listing { padding: .5em; border-radius: 5px; background: #222; width: 98%; border: 1px solid #000;}
+      div.file_listing { padding: .5em; border-radius: 5px; background: #222; width: 100%; border: 1px solid #000;}
       = ".summary {padding: 1em; border-radius: 5px; background: #4c5d62; width: 98%; border: .5em solid #000;}"
       = ".clear { clear: both; }"
       = ".indented {margin-left: 1em; }"
@@ -36,38 +36,38 @@
     .file_meta
       %h1
         Snuffle Analysis
+      %h2
+        = start_path
 
     %br.clear
 
-    .summary
+    %table{class: "output-table"}
 
-      %table{class: "output-table"}
-
-        %thead
-          %tr
-            %th
-              File
-            %th
-              Host Module/Class
-            %th
-              Object Candidates
-        %tbody
-          - summaries.each_with_index do |summary, i|
-            %tr{class: "#{i % 2 == 1 ? 'odd' : 'even'} #{summary.cohorts.count == 0 ? 'faint' : ''}"}
-              %td
-                - if summary.cohorts.count == 0
+      %thead
+        %tr
+          %th
+            File
+          %th
+            Host Module/Class
+          %th
+            Object Candidates
+      %tbody
+        - summaries.each_with_index do |summary, i|
+          %tr{class: "#{i % 2 == 1 ? 'odd' : 'even'} #{summary.cohorts.count == 0 ? 'faint' : ''}"}
+            %td
+              - if summary.cohorts.count == 0
+                = summary.path_to_file
+              - else
+                %a{href: "source/#{summary.class_filename}.htm"}
                   = summary.path_to_file
-                - else
-                  %a{href: "source/#{summary.class_filename}.htm"}
-                    = summary.path_to_file
-              %td
-                - if summary.class_name.size > 30
-                  = "..."
-                  = summary.class_name[-29..-1]
-                - else
-                  = summary.class_name
-              %td
-                = summary.cohorts.count
+            %td
+              - if summary.class_name.size > 30
+                = "..."
+                = summary.class_name[-29..-1]
+              - else
+                = summary.class_name
+            %td
+              = summary.cohorts.count
 
     %br.clear
 

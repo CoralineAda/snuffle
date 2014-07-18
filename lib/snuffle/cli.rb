@@ -18,7 +18,7 @@ module Snuffle
         report(summary, summary.source)
         summaries << summary
       end
-      create_html_index(summaries)
+      create_html_index(summaries, path)
       puts results_files.join("\n")
     end
 
@@ -42,9 +42,9 @@ module Snuffle
       html_report(summary, source)
     end
 
-    def create_html_index(summaries)
+    def create_html_index(summaries, start_path)
       return unless options['format'] == 'html'
-      results_files << Snuffle::Formatters::HtmlIndex.new(summaries).export
+      results_files << Snuffle::Formatters::HtmlIndex.new(summaries, start_path).export
     end
 
     def cvs_report(summary)
