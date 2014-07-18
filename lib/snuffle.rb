@@ -12,11 +12,13 @@ require_relative "snuffle/formatters/csv"
 require_relative "snuffle/formatters/html"
 require_relative "snuffle/formatters/html_index"
 require_relative "snuffle/formatters/text"
+require_relative "snuffle/latent_object"
 require_relative "snuffle/line_of_code"
 require_relative "snuffle/node"
 require_relative "snuffle/source_file"
 require_relative "snuffle/summary"
 require_relative "snuffle/elements/hash"
+require_relative "snuffle/elements/method_definition"
 require_relative "snuffle/util/histogram"
 
 module Snuffle

@@ -6,6 +6,7 @@ describe Snuffle::SourceFile do
   let(:program_2) { Snuffle::SourceFile.new(path_to_file: "spec/fixtures/program_2.rb") }
   let(:program_3) { Snuffle::SourceFile.new(path_to_file: "spec/fixtures/program_3.rb") }
   let(:program_4) { Snuffle::SourceFile.new(path_to_file: "spec/fixtures/program_4.rb") }
+
   describe "#cohorts" do
 
     it "does not match hash values with non-hash values" do
@@ -23,6 +24,17 @@ describe Snuffle::SourceFile do
     xit "does not match loose class method calls" do
       values = program_4.summary.cohorts.map(&:values)
       expect(values.empty?).to be_truthy
+    end
+
+  end
+
+  describe "#name_from" do
+
+    let(:program) { Snuffle::SourceFile.new(path_to_file: "spec/fixtures/latent_object_fixture.rb") }
+    let(:node)    { program.send(:ast).children[2].children[1] }
+
+    it "pulls the name of a method" do
+      expect(program.send(:name_from, node)).to eq('initialize')
     end
 
   end

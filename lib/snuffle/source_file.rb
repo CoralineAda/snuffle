@@ -75,7 +75,7 @@ module Snuffle
           extracted_node = Snuffle::Node.new(
             type: ast_node.type,
             parent_id: parent_id,
-            name: name_from(ast_node),
+            name: name,
             line_numbers: lines.map(&:line_number)
           )
         else
@@ -98,9 +98,7 @@ module Snuffle
         if name_coords = node.loc.name
           name = source[name_coords.begin_pos, name_coords.end_pos - 1]
           return unless name =~ /[a-zA-Z]/
-          return name
-        else
-          "?"
+          return name.gsub(/^([A-Za-z0-9\_]+)(.+)$/m, '\1')
         end
       else
         return name_from(node.children.last)

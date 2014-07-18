@@ -6,6 +6,9 @@ class Customer
 
   MY_CONSTANT = "TheOtherZachIsThePrimaryZach"
 
+  def self.api_root
+  end
+
   def my_condition
     puts "MAGIC" if true == false
   end

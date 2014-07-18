@@ -11,6 +11,7 @@ module Snuffle
     scope :by_type,     lambda{|type| where(:type => type)}
     scope :with_parent, lambda{|parent_id| where(parent_id: parent_id) }
     scope :hashes,      {type: :hash}
+    scope :methods,     {is_method: true}
 
     def self.nil
       new(type: :nil)
@@ -31,6 +32,10 @@ module Snuffle
 
     def children
       Snuffle::Node.where(parent_id: self.id)
+    end
+
+    def is_method
+      self.type == :def || self.type == :defs
     end
 
     def inspect
