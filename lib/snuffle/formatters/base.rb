@@ -31,7 +31,7 @@ module Snuffle
         path = root_path
         path << "/" + summary.path_to_results if summary
         FileUtils.mkpath(path)
-        @output_path = root_path
+        @output_path = path
       end
 
       def path_to_results

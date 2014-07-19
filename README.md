@@ -12,11 +12,6 @@ tell you that you might want to extract those methods to a latent Address class.
 Please note that Snuffle is still pre-release and will not be ready for serious
 use until it hits version 1.0.0.
 
-## TODO
-
-* Ignore data clumps called in "loose" class methods (e.g. attr_accessor)
-* Output files in folder hierarchy that mirrors source files
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -37,6 +32,12 @@ Or install it yourself as:
 
     Checking lib/example.rb...
     Results written to doc/snuffle/index.htm
+
+## Sample Output
+
+[!Overview](images/overview.png)
+
+[!Detail](images/detail.png)
 
 ## Contributing
 

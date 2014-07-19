@@ -13,14 +13,14 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://gitlab.com/coraline/snuffle/tree/master"
   spec.license       = "MIT"
 
-  spec.files         = `git ls-files -z`.split("\x0")
+  spec.files         = `git ls-files -z`.split("\x0") - %w(images)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
   spec.add_dependency "parser"
   spec.add_dependency "thor"
-  spec.add_dependency "ephemeral", "~> 2.3.2"
+  spec.add_dependency "ephemeral", "~> 2.3.3"
   spec.add_dependency "poro_plus"
   spec.add_dependency "rouge"
   spec.add_dependency "text-table"
