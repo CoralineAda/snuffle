@@ -12,7 +12,7 @@
       #{Rouge::Theme.find('thankful_eyes').render(scope: '.highlight')}
       a:link, a:visited { color: #fff }
       body { line-height: 1.5em; background: #49525a; color: #fff; font-family: arial, sans-serif; font-size: 14px; padding: 2em; }
-      div.column { float: left; width: 45%; }
+      div.column { float: left; width: 45%; margin-left: 4%; }
       div.file_listing { padding: .1em; border-radius: 5px; background: #000; width: 100%; border: 1px solid #000;}
       div.file_meta { padding: 1em; border-radius: 5px; background: #440013; width: 98%; border: .5em solid #000;}
       h1 { color:#fff; font-size: 1.25em; margin-top: .25em; }
@@ -26,6 +26,7 @@
       span.highlighted { padding-left: 1em; display: inline-block; position: absolute; left: 0px; padding-right: 90%}
       table { width: 100%; box-shadow: 0 5px 0 rgba(0,0,0,.8); border-spacing: 0; border: 5px solid #000; border-radius: 5px; border-collapse: collapse; min-width: 50%; }
       td { text-align: left; padding: .5em; padding-left: 1.25em !important;}
+      td.gutter { background-color: rgb(41, 80, 109) !important; }
       tfoot { background: #000; border-top: 10px solid #000; font-family: courier; margin-top: 4em; font-size: .75em;  }
       th { background: #000; text-align: left; padding: .5em; }
       tr.even { background: rgba(128, 128, 128, 0.5) !important;}
@@ -41,7 +42,7 @@
       .clear { clear: both; }
       .highlighted { background: rgba(170, 161, 57, .6); border-radius: 100px; }
       .highlighted-method { background: rgba(153, 51, 80, .6); padding: .25em; border-radius: 100px; color: #fff; }
-      .indented {margin-left: 1em; }
+      p.indented {margin-left: 2em; }
       .summary {padding: 1em; border-radius: 5px; background: rgb(41, 80, 109); width: 98%; border: .5em solid #000;}
       .btn {
         -webkit-border-radius: 28;
@@ -74,7 +75,8 @@
         %h3.indented.highlighted
           Data Clumps:
         - if summary.cohorts.count == 0
-          %em.indented None
+          %p.indented
+            %em None
         - else
           %ul.indented
             - summary.cohorts.group_by{|c| c.values.sort }.each do |values, cohorts|
@@ -89,7 +91,8 @@
         %h3.indented.highlighted-method
           Possible Latent Objects:
         - if summary.latent_objects.count == 0
-          %em.indented None
+          %p.indented
+            %em None
         - else
           %ul.indented
             - summary.latent_objects.each do |latent_object|
