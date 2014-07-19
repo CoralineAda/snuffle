@@ -5,6 +5,18 @@ class Snuffle::LatentObject
   attr_accessor :object_candidate, :source_methods
 
   DUPLICATE_THRESHOLD = 1
+  STOPWORDS = [
+    "the", "be", "to", "of", "and", "a", "in", "that", "have", "I", "it", "for",
+    "not", "on", "with", "he", "as", "you", "do", "at", "this", "but", "his",
+    "by", "from", "they", "we", "say", "her", "she", "or", "an", "will", "my",
+    "one", "all", "would", "there", "their", "what", "so", "up", "out", "if",
+    "about", "who", "get", "which", "go", "me", "when", "make", "can", "like",
+    "time", "no", "just", "him", "know", "take", "into", "else", "other", "again",
+    "your", "good", "some", "could", "them", "see", "other", "than", "then",
+    "now", "look", "only", "come", "its", "over", "think", "also", "back", "else",
+    "after", "use", "two", "how", "our", "work", "first", "well", "way", "even",
+    "new", "want", "because", "any", "these", "give", "day", "most", "us", "call"
+  ]
 
   def self.from(nodes)
     potential_objects_with_methods(nodes).map do |k,v|
@@ -19,7 +31,7 @@ class Snuffle::LatentObject
 
   def self.extract_candidates(methods)
     methods.map(&:method_name).inject({}) do |words, method_name|
-      atoms = method_name.split('_')
+      atoms = method_name.split('_') - STOPWORDS
       atoms.each{ |word| words[word] ||= []; words[word] << method_name }
       words
     end

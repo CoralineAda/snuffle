@@ -15,12 +15,14 @@
       pre.lineno { margin-top: -1.4em !important;}
       pre { line-height: 1.75em;}
       span.highlighted { background: rgba(200, 0, 0, .4); padding-left: 1em; border-radius: 100px; display: inline-block; position: absolute; left: 0px; padding-right: 90%}
+      span.highlighted-method { background: rgba(249, 212, 36, .4); padding: .25em; border-radius: 100px;}
       h1 { color:#fff; font-size: 1.25em; margin-top: .25em; }
       h2 { color:#fff; font-size: .75em; margin-top: -1em; }
       h3 { color:#fff; font-size: 1.1em;margin-top: 1em; }
       li { margin-bottom: 1em;}
+      div.column { float: left; width: 45%; }
       div.file_meta { padding: 1em; border-radius: 5px; background: #444; height: 3.5em; width: 98%; border: .5em solid #000;}
-      div.file_listing { padding: .5em; border-radius: 5px; background: #222; width: 100%; border: 1px solid #000;}
+      div.file_listing { padding: .5em; border-radius: 5px; background: #000; width: 100%; border: 1px solid #000;}
       = ".summary {padding: 1em; border-radius: 5px; background: #4c5d62; width: 98%; border: .5em solid #000;}"
       = ".clear { clear: both; }"
       = ".indented {margin-left: 1em; }"
@@ -36,16 +38,35 @@
     %br.clear
 
     %div.summary
-      %h3.indented
-        Candidate object attributes:
-
-      %ul.indented
-        - summary.cohorts.group_by{|c| c.values.sort }.each do |values, cohorts|
-          - if cohorts.count > 0
-            %li
-              = values.map{|c| "##{c}" }.join(", ")
-              %br
-              = ":#{cohorts.map(&:line_numbers).join(', :')}"
+      %div.column
+        %h3.indented
+          Data Clumps:
+        - if summary.cohorts.count == 0
+          %em.indented None
+        - else
+          %ul.indented
+            - summary.cohorts.group_by{|c| c.values.sort }.each do |values, cohorts|
+              - if cohorts.count > 0
+                %li
+                  = values.map{|c| ".#{c}" }.join(", ")
+                  %br
+                  (from
+                  = ":#{cohorts.map(&:line_numbers).join(', :')}"
+                  )
+      %div.column
+        %h3.indented
+          Possible Latent Objects:
+        - if summary.latent_objects.count == 0
+          %em.indented None
+        - else
+          %ul.indented
+            - summary.latent_objects.each do |latent_object|
+              %li
+                = latent_object.object_candidate.titleize
+                %br
+                (from
+                = ".#{latent_object.source_methods.join(', .')}"
+                )
       %br.clear
 
     %br.clear
@@ -59,10 +80,9 @@
     :javascript
 
       var line_numbers = #{summary.cohorts.map(&:line_numbers).flatten};
+      var method_names = #{summary.latent_objects.map(&:source_methods).flatten};
 
       $('pre.lineno').html($('pre.lineno').html().split(/\s+/).map(function(val){ if (line_numbers.indexOf(parseInt(val)) > -1) { return "<span class='highlighted'>" + val + "</span>\n" } else { return "<span class='foo'>" + val + "</span>\n"};}))
 
-      for (i = 0; i <= line_numbers; i ++) {
-        $('.code pre').html($('.code pre').html().split(/\s+/)[i].html("<span class='highlighted'>" + i + "</span>\n"))
-      }
+      $('.nf').each(function(i, elem) { if (method_names.indexOf($(elem).text()) > -1) { $(elem).addClass('highlighted-method'); }})
 

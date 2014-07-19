@@ -23,6 +23,10 @@ module Snuffle
       @cohorts ||= Cohort.from(self.nodes)
     end
 
+    def latent_objects
+      @latent_objects ||= LatentObject.from(self.nodes)
+    end
+
     def source
       return @source if @source
       end_pos = 0
@@ -42,6 +46,7 @@ module Snuffle
         class_name: class_name,
         path_to_file: self.path_to_file,
         cohorts: cohorts,
+        latent_objects: latent_objects,
         source: self.source
       )
     end
@@ -98,7 +103,7 @@ module Snuffle
         if name_coords = node.loc.name
           name = source[name_coords.begin_pos, name_coords.end_pos - 1]
           return unless name =~ /[a-zA-Z]/
-          return name.gsub(/^([A-Za-z0-9\_]+)(.+)$/m, '\1')
+          return name.gsub(/^([A-Za-z0-9\_\?\!]+)(.+)$/m, '\1')
         end
       else
         return name_from(node.children.last)
