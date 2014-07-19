@@ -4,8 +4,16 @@ class Customer
   attr_accessor :customer_id, :customer_name, :company_name
   attr_accessor :street_address_1, :street_address_2
   attr_accessor :city, :state, :postal_code
+  attr_accessor :fred
 
   MY_CONSTANT = "TheOtherZachIsThePrimaryZach"
+
+  def who_is_fred
+    {
+      :status => 'friend',
+      :name => self.fred
+    }
+  end
 
   def my_condition
     puts "MAGIC" if true == false

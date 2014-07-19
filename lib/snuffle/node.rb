@@ -12,9 +12,14 @@ module Snuffle
     scope :with_parent, lambda{|parent_id| where(parent_id: parent_id) }
     scope :hashes,      {type: :hash}
     scope :methods,     {is_method: true}
+    scope :non_sends,   {is_send: false}
 
     def self.nil
       new(type: :nil)
+    end
+
+    def self.not_a(type)
+      select{|node| node.type != type}
     end
 
     def initialize(*args, &block)
@@ -36,6 +41,10 @@ module Snuffle
 
     def is_method
       self.type == :def || self.type == :defs
+    end
+
+    def is_send
+      self.type == :send
     end
 
     def inspect

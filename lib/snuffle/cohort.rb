@@ -6,9 +6,12 @@ module Snuffle
     attr_accessor :element, :neighbors, :line_numbers
 
     def self.from(nodes)
-      cohorts = Element::Hash.materialize(nodes.hashes.to_a).inject([]) do |cohorts, element|
+      nodes = nodes.non_sends.hashes
+      cohorts = Element::Hash.materialize(nodes.to_a).inject([]) do |cohorts, element|
         cohort = Cohort.new(element: element, line_numbers: element.node.line_numbers )
-        cohorts << cohort if cohort.values.count > 1 && cohort.near_neighbors.count > 0
+        if cohort.values.count > 1 && cohort.near_neighbors.count > 0
+          cohorts << cohort
+        end
         cohorts
       end
     end
