@@ -1,5 +1,7 @@
 # Snuffle
 
+[![Gem Version](https://badge.fury.io/rb/snuffle.svg)](http://badge.fury.io/rb/snuffle)
+
 Snuffle analyzes source code to identify "data clumps", clusters of attributes
 that are often used together. It uses this analysis to propose objects that
 may be extracted from a given class. It also looks for objects that are hinted
