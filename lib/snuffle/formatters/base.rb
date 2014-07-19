@@ -27,8 +27,11 @@ module Snuffle
       end
 
       def output_path
-        FileUtils.mkpath(root_path)
-        root_path
+        return @output_path if @output_path
+        path = root_path
+        path << "/" + summary.path_to_results if summary
+        FileUtils.mkpath(path)
+        @output_path = root_path
       end
 
       def path_to_results
@@ -36,7 +39,7 @@ module Snuffle
       end
 
       def filename
-        base = summary.class_filename
+        base = "#{summary.filename}"
         base + file_extension
       end
 

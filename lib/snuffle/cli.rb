@@ -9,8 +9,8 @@ module Snuffle
     def check(path="./")
       summaries = []
       file_list(path).each do |path_to_file|
-        Snuffle::Node.delete_all
         puts "Checking #{path_to_file}..."
+        Snuffle::Node.delete_all
         summary = Snuffle::SourceFile.new(path_to_file: path_to_file).summary
         html_report(summary, summary.source)
         summaries << summary

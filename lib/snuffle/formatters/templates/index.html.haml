@@ -93,7 +93,7 @@
           %tr{class: "#{i % 2 == 1 ? 'odd' : 'even'} #{summary.has_results? ? '' : 'faint'}"}
             %td
               - if summary.has_results?
-                %a{href: "source/#{summary.class_filename}.htm"}
+                %a{href: "source/#{summary.path_to_results}/#{summary.filename}.htm"}
                   = summary.path_to_file
               - else
                 = summary.path_to_file
