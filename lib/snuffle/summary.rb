@@ -8,6 +8,10 @@ module Snuffle
       self.class_name.downcase.gsub(' ', '_')
     end
 
+    def has_results?
+      self.cohorts.count != 0 || self.latent_objects.count != 0
+    end
+
   end
 
 end

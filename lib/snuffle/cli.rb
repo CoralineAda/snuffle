@@ -5,21 +5,17 @@ module Snuffle
 
   class CLI < Thor
 
-    desc_text = "Formats are text (default, to STDOUT), html, and csv. "
-    desc_text << "Example: snuffle check foo/ -f html"
-
-    desc "check PATH_TO_FILE [-f FORMAT] [-t MAX_COMPLEXITY_ALLOWED]", desc_text
-    method_option :format, :type => :string, :default => 'text', :aliases => "-f"
-
+    desc "snuffle check PATH_TO_FILES", "Example: snuffle app/models/"
     def check(path="./")
       summaries = []
       file_list(path).each do |path_to_file|
+        puts "Checking #{path_to_file}..."
         summary = Snuffle::SourceFile.new(path_to_file: path_to_file).summary
-        report(summary, summary.source)
+        html_report(summary, summary.source)
         summaries << summary
       end
       create_html_index(summaries, path)
-      puts results_files.join("\n")
+      puts "Results written to #{results_files.last}"
     end
 
     default_task :check
@@ -39,30 +35,16 @@ module Snuffle
     def report(summary, source)
       text_report(summary)
       cvs_report(summary)
-      html_report(summary, source)
+
     end
 
     def create_html_index(summaries, start_path)
-      return unless options['format'] == 'html'
       results_files << Snuffle::Formatters::HtmlIndex.new(summaries, start_path).export
     end
 
-    def cvs_report(summary)
-      return unless options['format'] == 'csv'
-      return unless summary.cohorts.count > 0 || summary.latent_objects.count > 0
-      results_files << Snuffle::Formatters::Csv.new(summary).export
-    end
-
     def html_report(summary, source)
-      return unless options['format'] == 'html'
       return unless summary.cohorts.count > 0 || summary.latent_objects.count > 0
       results_files << Snuffle::Formatters::Html.new(summary, source).export
-    end
-
-    def text_report(summary)
-      return unless options['format'] == 'text'
-      puts
-      puts Snuffle::Formatters::Text.new(summary).export
     end
 
     def results_files

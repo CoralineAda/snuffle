@@ -2,13 +2,18 @@
 
 Snuffle analyzes source code to identify "data clumps", clusters of attributes
 that are often used together. It uses this analysis to propose objects that
-may be extracted from a given class.
+may be extracted from a given class. It also looks for objects that are hinted
+at by method names and identifies them as "latent objects". For example, if you
+have `home_address` and `work_address` methods in a User class, Snuffle will
+tell you that you might want to extract those methods to a latent Address class.
+
+Please note that Snuffle is still pre-release and will not be ready for serious
+use until it hits version 1.0.0.
 
 ## TODO
 
 * Ignore data clumps called in "loose" class methods (e.g. attr_accessor)
-* Match on string concatenation
-* Consider weighting based on match type
+* Output files in folder hierarchy that mirrors source files
 
 ## Installation
 
@@ -26,13 +31,10 @@ Or install it yourself as:
 
 ## Usage
 
-    $ snuffle check example.rb
+    $ snuffle check lib/example.rb
 
-    +----------------------------+------------+-----------------------------+
-    |          Filename          | Host Class | Candidate Object Attributes |
-    +----------------------------+------------+-----------------------------+
-    | example.rb                 | Customer   | company_name, customer_name |
-    +----------------------------+------------+-----------------------------+
+    Checking lib/example.rb...
+    Results written to doc/snuffle/index.htm
 
 ## Contributing
 
