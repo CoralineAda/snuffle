@@ -4,6 +4,9 @@
     %title
       Snuffle
     %link{href: "http://cdn.datatables.net/1.10.0/css/jquery.dataTables.css", rel: "stylesheet"}
+    %script{language: "javascript", src: "http://code.jquery.com/jquery-1.11.0.min.js", type: "text/javascript"}
+    %script{language: "javascript", src: "http://code.jquery.com/jquery-migrate-1.2.1.min.js", type: "text/javascript"}
+    %script{language: "javascript", src: "http://cdn.datatables.net/1.10.0/js/jquery.dataTables.js", type: "text/javascript"}
 
     :css
       #{Rouge::Theme.find('thankful_eyes').render(scope: '.highlight')}
@@ -12,6 +15,10 @@
       div.column { float: left; width: 45%; }
       div.file_listing { padding: .1em; border-radius: 5px; background: #000; width: 100%; border: 1px solid #000;}
       div.file_meta { padding: 1em; border-radius: 5px; background: #440013; width: 98%; border: .5em solid #000;}
+      div.dataTables_filter { margin-bottom: 2em !important; }
+      div.dataTables_filter label { color: #fff; }
+      div.dataTables_paginate { display: none !important; }
+      div.dataTables_info { display: none !important; }
       h1 { color:#fff; font-size: 1.25em; margin-top: .25em; }
       h2 { color:#fff; font-size: .75em; margin-top: -1em; }
       h3 { color:#fff; font-size: 1.1em;margin-top: 1em; }
@@ -22,17 +29,21 @@
       pre.lineno { margin-top: -1.4em !important;}
       span.highlighted { padding-left: 1em; display: inline-block; position: absolute; left: 0px; padding-right: 90%}
       table { width: 100%; box-shadow: 0 5px 0 rgba(0,0,0,.8); border-spacing: 0; border: 5px solid #000; border-radius: 5px; border-collapse: collapse; min-width: 50%; }
-      td { text-align: left; padding: .5em; padding-left: 1.25em !important;}
-      tfoot { background: #000; border-top: 10px solid #000; font-family: courier; margin-top: 4em; font-size: .75em;  }
       th { background: #000; text-align: left; padding: .5em; }
-      tr.even { background: rgba(128, 128, 128, 0.5) !important;}
-      tr.even:hover, tr.odd:hover { background: rgba(128, 128, 128, 0.75) !important;}
+      td { text-align: left; padding: .5em; padding-left: 1.25em !important;}
+      td.center { text-align: center; }
+      td.sorting_1 { background: none !important; padding-left: 1.25em !important; }
+      th.sorting_asc, th.sorting_desc { text-transform: uppercase !important; font-size: .8em !important; background-image: none !important; background: rgba(64, 41, 41, .5) !important;}
+      th.sorting { background-position: left !important; border-right: 1px solid #222; text-transform: uppercase !important; font-size: .8em !important}
       tr.faint td { opacity: 0.5; font-style: italic; }
       tr.header { background-color: #222; }
-      tr.header th:first-child { border-radius: 5px 0 0 0; }
-      tr.header th:last-child { border-radius: 0 5px 0 0; }
-      tr.header th:only-child { border-radius: 5px 5px 0 0; }
+      tr.header th:first-child { border-radius: 6px 0 0 0; }
+      tr.header th:last-child { border-radius: 0 6px 0 0; }
+      tr.header th:only-child { border-radius: 6px 6px 0 0; }
+      tr.header { background-color: #222; }
+      tr.even { background: rgba(128, 128, 128, 0.5) !important;}
       tr.odd { background: rgba(128, 128, 128, 0.25) !important}
+      tr.even:hover, tr.odd:hover { background: rgba(128, 128, 128, 0.75) !important;}
       .center { text-align: center; }
       .clear { clear: both; }
       .highlighted { background: rgba(170, 161, 57, .6); border-radius: 100px; }
@@ -81,7 +92,7 @@
             Latent Objects
       %tbody
         - summaries.each_with_index do |summary, i|
-          %tr{class: "#{i % 2 == 1 ? 'odd' : 'even'} #{summary.has_results? ? 'faint' : ''}"}
+          %tr{class: "#{i % 2 == 1 ? 'odd' : 'even'} #{summary.has_results? ? '' : 'faint'}"}
             %td
               - if summary.has_results?
                 %a{href: "source/#{summary.class_filename}.htm"}
@@ -111,3 +122,12 @@
         by
         %a{href: "https://gitlab.com/coraline/snuffle", target: "_new"}
           Snuffle
+
+    :javascript
+      $(document).ready(function(){
+        $('.output-table').dataTable({
+          bLengthChange: false,
+          iDisplayLength: 25000,
+          "order": [[2, "desc"]]
+        });
+      });
