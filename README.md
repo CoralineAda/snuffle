@@ -35,9 +35,9 @@ Or install it yourself as:
 
 ## Sample Output
 
-[!Overview](images/overview.png)
+![Overview](images/overview.png)
 
-[!Detail](images/detail.png)
+![Detail](images/detail.png)
 
 ## Contributing
 
