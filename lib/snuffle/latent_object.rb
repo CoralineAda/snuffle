@@ -1,3 +1,5 @@
+require 'uea-stemmer'
+
 class Snuffle::LatentObject
 
   include PoroPlus
@@ -15,7 +17,8 @@ class Snuffle::LatentObject
     "your", "good", "some", "could", "them", "see", "other", "than", "then",
     "now", "look", "only", "come", "its", "over", "think", "also", "back", "else",
     "after", "use", "two", "how", "our", "work", "first", "well", "way", "even",
-    "new", "want", "because", "any", "these", "give", "day", "most", "us", "call"
+    "new", "want", "because", "any", "these", "give", "day", "most", "us", "call",
+    "create", "edit", "new", "delete", "destroy", "update"
   ]
 
   def self.from(nodes)
@@ -30,8 +33,10 @@ class Snuffle::LatentObject
   end
 
   def self.extract_candidates(methods)
+    stemmer = UEAStemmer.new
     methods.map(&:method_name).inject({}) do |words, method_name|
       atoms = method_name.split('_') - STOPWORDS
+      atoms = atoms.map{|atom| stemmer.stem(atom.to_s)}
       atoms.each{ |word| words[word] ||= []; words[word] << method_name }
       words
     end

@@ -13,6 +13,22 @@ class Song
     metadata[:playlist]
   end
 
+  def artist_name?
+    self.artist && self.artist.name
+  end
+
+  def helpers
+    [helper]
+  end
+
+  def helper
+    Helper.new
+  end
+
+  def artist_name
+    artis_name? || "Unknown"
+  end
+
   def can_be_downloaded?
     metadata[:download]
   end

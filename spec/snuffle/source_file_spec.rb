@@ -3,6 +3,7 @@ require 'pry'
 
 describe Snuffle::SourceFile do
 
+  let(:program_1) { Snuffle::SourceFile.new(path_to_file: "spec/fixtures/program_1.rb") }
   let(:program_2) { Snuffle::SourceFile.new(path_to_file: "spec/fixtures/program_2.rb") }
   let(:program_3) { Snuffle::SourceFile.new(path_to_file: "spec/fixtures/program_3.rb") }
   let(:program_4) { Snuffle::SourceFile.new(path_to_file: "spec/fixtures/program_4.rb") }
