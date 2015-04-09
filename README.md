@@ -12,6 +12,8 @@ tell you that you might want to extract those methods to a latent Address class.
 Please note that Snuffle is still pre-release and will not be ready for serious
 use until it hits version 1.0.0.
 
+Based on an idea developed with Kerri Miller (@kerrizor).
+
 ## Installation
 
 Add this line to your application's Gemfile:
