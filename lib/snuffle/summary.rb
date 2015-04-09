@@ -3,9 +3,10 @@ module Snuffle
   class Summary
     include PoroPlus
     attr_accessor :class_name, :path_to_file, :cohorts, :latent_objects, :source
+    attr_accessor :arg_clumps
 
    def has_results?
-      self.cohorts.count != 0 || self.latent_objects.count != 0
+      self.cohorts.count != 0 || self.latent_objects.count != 0 || self.arg_clumps.count != 0
     end
 
     def path_to_results

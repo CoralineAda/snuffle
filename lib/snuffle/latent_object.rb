@@ -28,13 +28,13 @@ class Snuffle::LatentObject
   end
 
   def self.potential_objects_with_methods(nodes, threshold=DUPLICATE_THRESHOLD)
-    method_candidates = Snuffle::Element::MethodDefinition.materialize(nodes.methods)
+    method_candidates = Snuffle::Element::MethodDefinition.materialize(nodes.method_defs)
     extract_candidates(method_candidates).select{|k,v| v.count > threshold }
   end
 
-  def self.extract_candidates(methods)
+  def self.extract_candidates(method_defs)
     stemmer = UEAStemmer.new
-    methods.map(&:method_name).inject({}) do |words, method_name|
+    method_defs.map(&:method_name).inject({}) do |words, method_name|
       atoms = method_name.split('_') - STOPWORDS
       atoms = atoms.map{|atom| stemmer.stem(atom.to_s)}
       atoms.each{ |word| words[word] ||= []; words[word] << method_name }

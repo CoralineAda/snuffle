@@ -7,11 +7,10 @@ module Snuffle
 
     attr_accessor :id, :name, :type, :child_ids, :parent_id, :line_numbers, :args
 
-    scope :by_id,       lambda{|id| where(:id => id)}
     scope :by_type,     lambda{|type| where(:type => type)}
     scope :with_parent, lambda{|parent_id| where(parent_id: parent_id) }
     scope :hashes,      {type: :hash}
-    scope :methods,     {is_method: true}
+    scope :method_defs, {is_method: true}
     scope :non_sends,   {is_send: false}
 
     def self.nil

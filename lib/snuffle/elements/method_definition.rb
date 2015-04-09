@@ -14,4 +14,11 @@ class Snuffle::Element::MethodDefinition
     node.name
   end
 
+  def values
+    return [] unless node.children.objects.any?
+    args = node.children.objects[1].children.map{|child| child.name}.flatten
+    args
+  end
+
+
 end

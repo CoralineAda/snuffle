@@ -19,6 +19,10 @@ module Snuffle
       @nodes ||= extract_nodes_from(ast)
     end
 
+    def arg_clumps
+      @arg_clumps ||= ArgsClump.from(self.nodes)
+    end
+
     def cohorts
       @cohorts ||= Cohort.from(self.nodes)
     end
@@ -47,6 +51,7 @@ module Snuffle
         path_to_file: self.path_to_file,
         cohorts: cohorts,
         latent_objects: latent_objects,
+        arg_clumps: arg_clumps,
         source: self.source
       )
     end
@@ -73,14 +78,6 @@ module Snuffle
       @ast ||= Parser::CurrentRuby.parse(source)
     end
 
-    def extracted_args(ast_node)
-      begin
-        ast_node.children[1].children.map{|child| child.children}.flatten
-      rescue
-        []
-      end
-    end
-
     def extract_nodes_from(ast_node, nodes=Ephemeral::Collection.new("Snuffle::Node"), parent_id=:root)
       if name = name_from(ast_node)
         if ast_node.respond_to?(:type)
@@ -89,8 +86,7 @@ module Snuffle
             type: ast_node.type,
             parent_id: parent_id,
             name: name,
-            line_numbers: lines.map(&:line_number),
-            args: extracted_args(ast_node)
+            line_numbers: lines.map(&:line_number)
           )
         else
           extracted_node = Snuffle::Node.new(
