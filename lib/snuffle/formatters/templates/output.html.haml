@@ -74,7 +74,7 @@
       %div.column
         %h3.indented.highlighted
           Data Clumps:
-        - if summary.cohorts.count == 0
+        - if summary.cohorts.count == 0 && summary.arg_clumps.count == 0
           %p.indented
             %em None
         - else
@@ -86,6 +86,14 @@
                   %br
                   (line
                   = ":#{cohorts.map(&:line_numbers).join(', :')}"
+                  )
+            - summary.arg_clumps.group_by{|c| c.values.sort }.each do |values, clumps|
+              - if clumps.count > 0
+                %li
+                  = values.map{|c| ".#{c}" }.join(", ")
+                  %br
+                  (line
+                  = ":#{clumps.map(&:line_numbers).join(', :')}"
                   )
       %div.column
         %h3.indented.highlighted-method

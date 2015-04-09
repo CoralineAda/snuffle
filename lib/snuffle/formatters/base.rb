@@ -39,8 +39,7 @@ module Snuffle
       end
 
       def filename
-        base = "#{summary.filename}"
-        base + file_extension
+        "#{summary.filename}" + file_extension
       end
 
       def file_extension

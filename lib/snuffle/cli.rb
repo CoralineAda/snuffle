@@ -36,7 +36,6 @@ module Snuffle
     def report(summary, source)
       text_report(summary)
       cvs_report(summary)
-
     end
 
     def create_html_index(summaries, start_path)

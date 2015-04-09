@@ -5,7 +5,7 @@ module Snuffle
     include Ephemeral::Base
     include PoroPlus
 
-    attr_accessor :id, :name, :type, :child_ids, :parent_id, :line_numbers
+    attr_accessor :id, :name, :type, :child_ids, :parent_id, :line_numbers, :args
 
     scope :by_id,       lambda{|id| where(:id => id)}
     scope :by_type,     lambda{|type| where(:type => type)}

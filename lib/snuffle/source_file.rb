@@ -73,6 +73,14 @@ module Snuffle
       @ast ||= Parser::CurrentRuby.parse(source)
     end
 
+    def extracted_args(ast_node)
+      begin
+        ast_node.children[1].children.map{|child| child.children}.flatten
+      rescue
+        []
+      end
+    end
+
     def extract_nodes_from(ast_node, nodes=Ephemeral::Collection.new("Snuffle::Node"), parent_id=:root)
       if name = name_from(ast_node)
         if ast_node.respond_to?(:type)
@@ -81,7 +89,8 @@ module Snuffle
             type: ast_node.type,
             parent_id: parent_id,
             name: name,
-            line_numbers: lines.map(&:line_number)
+            line_numbers: lines.map(&:line_number),
+            args: extracted_args(ast_node)
           )
         else
           extracted_node = Snuffle::Node.new(
