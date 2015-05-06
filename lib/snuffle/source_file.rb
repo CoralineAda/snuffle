@@ -51,8 +51,7 @@ module Snuffle
         path_to_file: self.path_to_file,
         cohorts: cohorts,
         latent_objects: latent_objects,
-        arg_clumps: arg_clumps,
-        source: self.source
+        arg_clumps: arg_clumps
       )
     end
 
