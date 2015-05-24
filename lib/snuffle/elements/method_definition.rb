@@ -16,7 +16,7 @@ class Snuffle::Element::MethodDefinition
 
   def values
     begin
-      return [] unless node.children.objects.any?
+      return [] unless node && node.children.objects.any?
       node.children.objects[1].children.map{|child| child.name}.flatten
     rescue
       []

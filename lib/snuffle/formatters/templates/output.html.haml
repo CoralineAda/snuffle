@@ -79,7 +79,7 @@
             %em None
         - else
           %ul.indented
-            - summary.cohorts.group_by{|c| c.values.sort }.each do |values, cohorts|
+            - summary.cohorts.group_by{|c| c.values.map(&:to_s).sort }.each do |values, cohorts|
               - if cohorts.count > 0
                 %li
                   = values.map{|c| ".#{c}" }.join(", ")
@@ -87,7 +87,7 @@
                   (line
                   = ":#{cohorts.map(&:line_numbers).join(', :')}"
                   )
-            - summary.arg_clumps.group_by{|c| c.values.sort }.each do |args, clumps|
+            - summary.arg_clumps.group_by{|c| c.values.map(&:to_s).sort }.each do |args, clumps|
               - if clumps.count > 0
                 %li
                   = args.map{|c| ".#{c}" }.join(", ")
